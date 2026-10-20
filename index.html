@@ -1,153 +1,137 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#8A1538">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#772c2b">
+<title>Kit de survie Qatar — FR ↔ EN</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<title>Kit de survie Qatar — FR → EN</title>
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
 <style>
-  :root{
-    --maroon:#8A1538; --maroon-dark:#6d102c; --sand:#faf6f0; --card:#ffffff;
-    --ink:#241a1c; --muted:#8a7d80; --line:#eadfe0; --ok:#0e7a4e; --warn:#b3541e;
-    --radius:14px;
-  }
-  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-  html,body{margin:0;padding:0;}
-  body{
-    font-family:-apple-system,"Segoe UI",Roboto,system-ui,sans-serif;
-    background:var(--sand); color:var(--ink); padding-bottom:40px;
-  }
-  header{
-    background:linear-gradient(135deg,var(--maroon),#a92447);
-    color:#fff; padding:16px 16px 14px; position:sticky; top:0; z-index:10;
-    box-shadow:0 2px 10px rgba(109,16,44,.25);
-  }
-  .h-row{display:flex; align-items:center; justify-content:space-between; gap:8px;}
-  h1{font-size:1.15rem; margin:0; font-weight:700; letter-spacing:.2px;}
-  .flag{font-size:1.3rem;}
-  .offline{
-    font-size:.68rem; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.35);
-    padding:3px 8px; border-radius:999px; white-space:nowrap;
-  }
-  .searchwrap{margin-top:12px; position:relative;}
-  input[type=search]{
-    width:100%; padding:13px 42px 13px 16px; border-radius:12px; border:none;
-    font-size:1.02rem; background:#fff; color:var(--ink); outline:none;
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
-  }
-  input[type=search]::placeholder{color:#b3a6a9;}
-  .clearbtn{
-    position:absolute; right:6px; top:50%; transform:translateY(-50%);
-    border:none; background:none; font-size:1.2rem; color:var(--muted);
-    padding:8px; cursor:pointer;
-  }
-  #chips{
-    display:flex; gap:8px; overflow-x:auto; padding:12px 16px 4px;
-    scrollbar-width:none; -ms-overflow-style:none;
-  }
-  #chips::-webkit-scrollbar{display:none;}
-  .chip{
-    flex:0 0 auto; border:1.5px solid var(--maroon); color:var(--maroon);
-    background:#fff; border-radius:999px; padding:7px 13px; font-size:.85rem;
-    font-weight:600; cursor:pointer; white-space:nowrap;
-  }
-  .chip.active{background:var(--maroon); color:#fff;}
-  main{padding:10px 16px 0; max-width:720px; margin:0 auto;}
-  .cat-title{
-    font-size:.8rem; text-transform:uppercase; letter-spacing:1px; color:var(--maroon);
-    font-weight:800; margin:16px 2px 8px; display:flex; align-items:center; gap:8px;
-  }
-  .card{
-    background:var(--card); border-radius:var(--radius); padding:13px 14px;
-    margin-bottom:10px; border:1px solid var(--line);
-    box-shadow:0 1px 4px rgba(109,16,44,.06);
-  }
-  .card.fav{border-color:var(--maroon); background:#fdf4f6;}
-  .fr{color:var(--muted); font-size:.88rem;}
-  .en{font-size:1.18rem; font-weight:700; margin-top:3px; line-height:1.3;}
-  .pro{font-style:italic; color:var(--maroon); font-size:.92rem; margin-top:3px;}
-  .pro::before{content:"🔊 "; font-style:normal;}
-  .note{
-    margin-top:8px; font-size:.8rem; background:#fff7ec; color:var(--warn);
-    border-left:3px solid var(--warn); padding:6px 9px; border-radius:6px;
-  }
-  .actions{display:flex; gap:8px; margin-top:9px;}
-  .abtn{
-    border:1.5px solid var(--line); background:#faf6f0; color:var(--maroon);
-    border-radius:9px; padding:6px 12px; font-size:.8rem; font-weight:700; cursor:pointer;
-  }
-  .abtn.star.on{border-color:#e0a800; background:#fff8e1; color:#c79000;}
-  .big{width:100%; font-size:1rem; padding:11px;}
-  .empty{text-align:center; color:var(--muted); padding:30px 10px; font-size:.95rem;}
-  .wordgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
-  @media(min-width:560px){ .wordgrid{grid-template-columns:1fr 1fr 1fr;} }
-  .wcard{background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 11px;}
-  .wcard .fr{font-size:.78rem;}
-  .wcard .en{font-size:1rem; font-weight:700;}
-  .wcard .pro{font-size:.8rem;}
-  .sect{font-size:.78rem; font-weight:800; letter-spacing:1px; color:var(--maroon);
-        text-transform:uppercase; margin:14px 2px 8px;}
-  .info-card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:10px;}
-  .info-card h3{margin:0 0 6px; font-size:1rem; color:var(--maroon);}
-  .telrow{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px dashed var(--line);}
-  .telrow:last-child{border-bottom:none;}
-  .telnum{font-weight:800; font-size:1.15rem; color:var(--maroon); text-decoration:none;}
-  .numbox{display:flex; gap:8px; margin:12px 0 6px;}
-  .numbox input{
-    flex:1; padding:11px 14px; border-radius:12px; border:1.5px solid var(--line);
-    font-size:1.05rem; outline:none;
-  }
-  .numbox input:focus{border-color:var(--maroon);}
-  .numout{font-size:1.1rem; font-weight:700; color:var(--ink); margin-top:6px;}
-  .tip{font-size:.85rem; line-height:1.5; margin:0 0 10px;}
-  .tip b{color:var(--maroon);}
-  footer{text-align:center; color:var(--muted); font-size:.75rem; padding:22px 16px 8px;}
-  mark{background:#ffe9a8; border-radius:3px; padding:0 1px;}
+*{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+:root{
+  --maroon:#772c2b; --maroon-dark:#4f1d1c; --sand:#f5efe0; --ink:#241e17;
+  --card:#fffdf7; --line:#e2d7c0; --good:#2e6b34; --warn:#8a5a00;
+}
+html{font-size:16px;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  background:linear-gradient(180deg,#f7f1e3 0%,#efe5cf 100%);
+  color:var(--ink); min-height:100vh; padding-bottom:env(safe-area-inset-bottom);
+}
+.wrap{max-width:720px; margin:0 auto; padding:14px 14px 30px;}
+header{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin:10px 0 4px;}
+h1{font-size:1.35rem; color:var(--maroon-dark); letter-spacing:.3px;}
+.offline{
+  font-size:.72rem; font-weight:700; color:#fff; background:var(--good);
+  padding:4px 9px; border-radius:999px; white-space:nowrap;
+}
+.tagline{font-size:.85rem; color:#6b5d48; margin:2px 0 12px;}
+#chips{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px; scrollbar-width:none;}
+#chips::-webkit-scrollbar{display:none;}
+.chip{
+  flex:0 0 auto; border:1.5px solid var(--maroon); color:var(--maroon); background:var(--card);
+  font-size:.85rem; font-weight:700; padding:7px 13px; border-radius:999px; cursor:pointer;
+}
+.chip.on{background:var(--maroon); color:#fff;}
+#list{display:flex; flex-direction:column; gap:10px;}
+.info-card{
+  background:var(--card); border:1.5px solid var(--line); border-radius:14px;
+  padding:14px; box-shadow:0 2px 6px rgba(80,60,20,.06);
+}
+.info-card h3{color:var(--maroon); font-size:1.05rem; margin-bottom:8px;}
+.info-card p{font-size:.9rem; margin:6px 0; line-height:1.45;}
+.numbox{
+  display:flex; gap:8px; align-items:center; background:#fff;
+  border:1.5px solid var(--line); border-radius:10px; padding:8px 10px; margin-top:8px;
+}
+.numbox input{
+  flex:1; border:0; outline:none; font-size:1.05rem; background:transparent; color:var(--ink); min-width:0;
+}
+.numout{
+  margin-top:12px; background:#fff; border:1.5px solid var(--line);
+  border-radius:10px; padding:12px; text-align:center;
+}
+.numout .en{font-size:1.4rem; font-weight:700; color:#162d40;}
+.numout .pro{font-size:1rem; color:#6b5d48; margin-top:4px;}
+.dirbox{display:flex; gap:8px; margin:12px 0 2px;}
+.dirbox .abtn{flex:1; font-size:.85rem;}
+.abtn.dir.active{background:var(--maroon); color:#fff; border-color:var(--maroon);}
+.trout{margin-top:12px;}
+.trout .en{font-size:1.25rem; font-weight:700;}
+.tr-h{margin:4px 6px 0 0; font-size:.75rem; font-weight:600;}
+.sect{
+  font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px;
+  color:var(--maroon); margin:16px 0 4px;
+}
+.tip{font-size:.78rem; color:#6b5d48; margin-top:10px; line-height:1.4;}
+.actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+.abtn{
+  border:1.5px solid var(--maroon); background:var(--card); color:var(--maroon);
+  font-size:.85rem; font-weight:700; padding:8px 14px; border-radius:999px; cursor:pointer;
+}
+.abtn.big{font-size:1rem; padding:10px 22px;}
+.abtn.on{background:var(--maroon); color:#fff;}
+.abtn.ttsb{font-size:.8rem; padding:6px 12px;}
+.cat-title{margin:4px 0 2px;}
+.card{
+  background:var(--card); border:1.5px solid var(--line); border-radius:14px;
+  padding:12px 14px; box-shadow:0 2px 6px rgba(80,60,20,.06);
+}
+.card .lbl{font-size:.7rem; font-weight:800; color:#8a6d3b; text-transform:uppercase; letter-spacing:.5px;}
+.card .fr{font-weight:700; font-size:1rem; margin-top:2px;}
+.card .en{font-weight:600; font-size:1.02rem; color:#162d40; margin-top:2px;}
+.card .pro{font-size:.88rem; color:#6b5d48; margin-top:2px; font-style:italic;}
+.card .note{font-size:.8rem; color:#8a6d3b; margin-top:6px; line-height:1.4;}
+.card .bad{color:var(--maroon); font-weight:700;}
+footer{
+  margin-top:18px; text-align:center; font-size:.72rem; color:#8a7a60;
+  line-height:1.5;
+}
 </style>
 </head>
 <body>
-<header>
-  <div class="h-row">
-    <h1><span class="flag">🇶🇦</span> Kit de survie Qatar</h1>
-    <span class="offline">v1 · hors ligne</span>
-  </div>
-  <div class="searchwrap">
-    <input id="q" type="search" placeholder="Tape un mot ou une phrase… (ex : eau, taxi, combien)" autocomplete="off">
-    <button id="clear" class="clearbtn" style="display:none" aria-label="Effacer">✕</button>
-  </div>
-</header>
-
-<nav id="chips" aria-label="Catégories"></nav>
-<main id="list"></main>
-<footer>French → English · prononciation à la française · fonctionne sans réseau</footer>
-
+<div class="wrap">
+  <header>
+    <h1>Kit de survie Qatar 🇶🇦</h1>
+    <span class="offline">v2 · hors ligne</span>
+  </header>
+  <p class="tagline">FR ↔ EN · phrases de survie + traducteur hors ligne — fonctionne sans réseau</p>
+  <nav id="chips" aria-label="Catégories"></nav>
+  <main id="list"></main>
+  <footer>
+    Phrases par situation + traducteur mot à mot embarqué.<br>
+    100 % hors ligne : aucune connexion requise. Synthèse vocale via l'appareil.
+  </footer>
+</div>
 <script>
 "use strict";
-/* ---------- Stockage sûr (fallback mémoire si localStorage bloqué) ---------- */
-var memStore = {};
-function store(k, v){ if(v===undefined){ try{ return localStorage.getItem(k); }catch(e){ return memStore[k]||null; } } try{ localStorage.setItem(k,v); }catch(e){ memStore[k]=v; } }
-function loadFavs(){ try{ return JSON.parse(store("qatar-fav")||"[]"); }catch(e){ return []; } }
-function saveFavs(a){ store("qatar-fav", JSON.stringify(a)); }
-var favs = loadFavs();
+/* ================================================================
+   Kit de survie Qatar v2 — 100 % hors ligne
+   - Phrases types par situation (recherche floue FR/EN)
+   - Traducteur mot à mot embarqué (dictionnaire local)
+   ================================================================ */
 
-/* ---------- Données : PHRASES (cat|fr|en|prononciation|note) ---------- */
 var CATS = [
-  ["base","👋 Essentiels"],
-  ["debg","🙋 Se débrouiller"],
-  ["aero","✈️ Aéroport & avion"],
-  ["trans","🚕 Taxi & transport"],
-  ["hotel","🏨 Hôtel"],
-  ["resto","🍽️ Restaurant"],
-  ["shop","🛍️ Shopping & argent"],
-  ["chemin","🧭 Demander son chemin"],
-  ["urgence","🚨 Urgences & santé"],
-  ["travail","🔧 Travail & matériel"],
-  ["nombres","🔢 Nombres & heure"],
-  ["arabe","🕌 Mots arabes"],
-  ["infos","ℹ️ Infos Qatar"]
+  ["trad", "🈯 Traducteur"],
+  ["base", "👋 Essentiels"],
+  ["debg", "🙋 Se débrouiller"],
+  ["aero", "✈️ Aéroport & avion"],
+  ["trans", "🚕 Taxi & transport"],
+  ["hotel", "🏨 Hôtel"],
+  ["resto", "🍽️ Restaurant"],
+  ["shop", "🛍️ Shopping & argent"],
+  ["chemin", "🧭 Demander son chemin"],
+  ["urgence", "🚨 Urgences & santé"],
+  ["travail", "🔧 Travail & matériel"],
+  ["nombres", "🔢 Nombres & heure"],
+  ["arabe", "🕌 Mots arabes"],
+  ["infos", "ℹ️ Infos Qatar"]
 ];
+var currentCat = "trad";
+var q = "";
+
+/* ---------------- phrases : cat|fr|en|prononciation|note ---------------- */
 var P = [
 /* base */
 "base|Bonjour / Salut|Hello / Hi|heul-lo / haï",
@@ -161,480 +145,920 @@ var P = [
 "base|Merci beaucoup|Thank you very much|seunkiou vèri matche",
 "base|Je vous en prie / de rien|You're welcome|iour ouelkeum",
 "base|S'il vous plaît|Please|pliz",
-"base|Excusez-moi|Excuse me|eks kiouz mi",
+"base|Excusez-moi|Excuse me|èkskiouz mi",
 "base|Pardon / désolé|Sorry|sorri",
-"base|Pas de problème|No problem|no problèm",
-"base|Comment allez-vous ?|How are you?|haou ar iou ?",
-"base|Très bien, merci|Very well, thank you|vèri ouèl, seunkiou",
-"base|Enchanté|Nice to meet you|naïss tou mite iou",
-"base|Comment tu t'appelles ?|What's your name?|ouats iour nëïm ?",
-"base|Je m'appelle Jade|My name is Jade|maï nëïm iz Djèïd",
-"base|Je suis français|I am French|aï am french",
-"base|D'accord|OK / alright|oké / olraïte",
-"base|Attends / attendez|Wait|ouèïte",
-"base|Vite !|Quick! / hurry!|kouik / heuri",
-"base|Attention !|Watch out!|ouatche aute",
-"base|Je ne sais pas|I don't know|aï done no",
-"base|Bien sûr|Of course|ov korss",
-"base|Vraiment ?|Really?|rilli ?",
-"base|C'est bon / c'est tout|That's fine / that's all|dats faïne / dats ol",
+"base|Ça va ? / Comment allez-vous ?|How are you?|haou ar iou",
+"base|Je vais bien, merci|I'm fine, thank you|aïm faïne seunkiou",
+"base|Et vous ?|And you?|ende iou",
+"base|Je m'appelle…|My name is…|maï neïm iz",
+"base|Enchanté|Nice to meet you|naïsse tou mït iou",
+"base|Je suis français(e)|I'm French|aïm frenche",
+"base|Je ne parle pas anglais|I don't speak English|aï donesspik ingliche",
+"base|Parlez-vous français ?|Do you speak French?|dou iousspik frenche",
+"base|Je parle un peu anglais|I speak a little English|aïsspik e litle ingliche",
+"base|Pouvez-vous répéter ?|Can you repeat, please?|kann iou ripîte pliz",
+"base|Parlez plus lentement, s'il vous plaît|Speak slower, please|sspik sloueur pliz",
+"base|Je ne comprends pas|I don't understand|aï done andeurstennde",
+"base|Je comprends|I understand|aï andeurstennde",
+"base|Pouvez-vous écrire ?|Can you write it down?|kann iou raïte ite daoune",
 /* débrouiller */
-"debg|Parlez-vous anglais ?|Do you speak English?|diou spik inglich ?",
-"debg|Parlez-vous français ?|Do you speak French?|diou spik french ?",
-"debg|Je parle un peu anglais|I speak a little English|aï spik e litl inglich",
-"debg|Je ne parle pas bien anglais|I don't speak English very well|aï done spik inglich vèri ouèl",
-"debg|Je ne comprends pas|I don't understand|aï done andeurstande",
-"debg|Je comprends|I understand|aï andeurstande",
-"debg|Vous pouvez répéter, s'il vous plaît ?|Can you repeat, please?|kann iou ripite pliz ?",
-"debg|Plus lentement, s'il vous plaît|Slower, please|slo-eur pliz",
-"debg|Comment dit-on … en anglais ?|How do you say … in English?|haou diou ssèï … in inglich ?",
-"debg|Que veut dire … ?|What does … mean?|ouate daz … mïne ?",
-"debg|Vous pouvez m'aider ?|Can you help me?|kann iou help mi ?",
-"debg|J'ai besoin d'aide|I need help|aï nïd help",
-"debg|Écrivez-le, s'il vous plaît|Write it down, please|raïte it daoune pliz",
-"debg|Je cherche quelqu'un qui parle français|I'm looking for someone who speaks French|aïm loukeuline for seumouane ou spiks french",
+"debg|Je suis perdu(e)|I'm lost|aïm loste",
+"debg|Pouvez-vous m'aider ?|Can you help me?|kann iou help mi",
+"debg|J'ai besoin d'aide|I need help|aï nide help",
+"debg|Je cherche…|I'm looking for…|aïm loukeuline fore",
+"debg|Où sont les toilettes ?|Where are the toilets?|ouèr ar ze toiletteusse",
+"debg|Quel est votre nom ?|What's your name?|ouates iour neïm",
+"debg|Je ne sais pas|I don't know|aï done no",
+"debg|Bien sûr / d'accord|Sure / OK|choure / oké",
+"debg|Attendez, s'il vous plaît|Wait, please|ouète pliz",
+"debg|C'est bon / c'est compris|That's fine / got it|dats faïne / gote ite",
+"debg|Je vais prendre mon téléphone|I'll get my phone|aïl gueute maï fone",
+"debg|Puis-je utiliser votre téléphone ?|May I use your phone?|meï aï iouze iour fone",
+"debg|Où est le wifi ?|Where's the wifi?|ouèr zze ouaïfaï",
+"debg|Quel est le mot de passe du wifi ?|What's the wifi password?|ouates zze ouaïfaï passeuorde",
+"debg|Je dois passer un appel|I need to make a call|aï nide tou meïke e kole",
+"debg|Ma batterie est vide|My battery is dead|maï batterï iz dede",
+"debg|Où puis-je recharger mon téléphone ?|Where can I charge my phone?|ouèr kann aï tcharje maï fone",
+"debg|Pouvez-vous montrer ?|Can you show me?|kann iou chomi",
+"debg|C'est combien ?|How much is it?|haoue matche izite",
+"debg|Qu'est-ce que c'est ?|What is this?|ouate iz disse",
+"debg|C'est délicieux|It's delicious|itse dilicheusse",
+"debg|Une dernière chose|One last thing|ouane laste sine",
+"debg|Je ne mange pas de porc ni d'alcool|I don't eat pork and I don't drink alcohol|aï done ite pork ende aï done drinke alkohol",
+"debg|C'est urgent|It's urgent|itse eurdejente",
+"debg|C'est important|It's important|itse importente",
+"debg|Je dois y aller|I have to go|aï hav tou go",
 /* aéroport */
-"aero|Où est le comptoir d'enregistrement ?|Where is the check-in desk?|ouèr iz ze tchek-in desk ?",
-"aero|Où est la porte 12 ?|Where is gate twelve?|ouèr iz guèïte touelv ?",
-"aero|Voici ma carte d'embarquement|Here is my boarding pass|hïr iz maï bordïne pass",
-"aero|Voici mon passeport|Here is my passport|hïr iz maï passpor",
-"aero|À quelle heure embarque-t-on ?|What time is boarding?|ouate taïm iz bordïne ?",
-"aero|Mon vol est retardé|My flight is delayed|maï flaïte iz dilèïde",
-"aero|Où est la livraison des bagages ?|Where is baggage claim?|ouèr iz bageudge klèïm ?",
-"aero|J'ai un bagage à main|I have hand luggage|aï hav hande lageudge",
-"aero|Je n'ai rien à déclarer|I have nothing to declare|aï hav nouteine tou déclère",
-"aero|Où est la douane ?|Where is customs?|ouèr iz kasteumz ?",
-"aero|C'est mon stopover / mon transit|It's my stopover / my transit|its maï stopeu-eur / maï transsite",
-"aero|Je change de vol ici|I have a connecting flight here|aï hav e konèctïne flaïte hïr",
-"aero|Où sont les taxis ?|Where are the taxis?|ouèr ar ze takssis ?",
-"aero|Un siège côté hublot / couloir|A window seat / an aisle seat|e ouindeau ssite / an aïl ssite",
-"aero|J'ai perdu mon bagage|I lost my luggage|aï lorst maï lageudge",
+"aero|Où est l'enregistrement ?|Where is check-in?|ouèr iz tchecke-inne",
+"aero|Où est la porte d'embarquement ?|Where is the boarding gate?|ouèr iz ze bordineue geïte",
+"aero|C'est ici mon vol ?|Is this my flight?|iz disse maï flaïte",
+"aero|Mon vol est retardé|My flight is delayed|maï flaïte iz dilleuède",
+"aero|Mon vol est annulé|My flight is cancelled|maï flaïe iz kensselde",
+"aero|Voici mon billet|Here is my ticket|hïr iz maï tikete",
+"aero|Voici mon passeport|Here is my passport|hïr iz maï passeporte",
+"aero|J'ai une valise|I have a suitcase|aï hav e sioukeuçèse",
+"aero|Bagage en soute|Checked baggage|tcheckte baguedje",
+"aero|Bagage à main|Hand luggage|hannde lougeudge",
+"aero|Où sont les tapis à bagages ?|Where is baggage claim?|ouèr sor ze baguedje kleïm",
+"aero|Je vole avec Qatar Airways|I'm flying with Qatar Airways|aïm flaïïne ouiss Qatar Èïr-ouèïsse",
+"aero|Je cherche le comptoir fret (cargo)|I'm looking for the cargo desk|aïm loukeuline fore ze kargo desk|Pour la logistique fret (ex : batteries), c'est le bon comptoir.",
+"aero|Où est le transfert vers le fret ?|Where is the cargo transfer?|ouèr iz ze kargo transsefeur|Utile si le matériel part en soute cargo.",
+"aero|Où puis-je faire enregistrer mon fret ?|Where can I check in my cargo?|ouèr kann aï tchecke in maï kargo",
+"aero|Je dois déclarer du matériel|I have equipment to declare|aï hav ikouipménnte tou dilèr",
+"aero|Rien à déclarer|Nothing to declare|nossine tou dilèr",
+"aero|Où est la douane ?|Where is customs?|ouèr iz keustomss",
+"aero|Je ne trouve pas mon vol sur l'écran|I can't find my flight on the screen|aï kante faïnde maï flaïte one ze seucrïne",
+"aero|Quel est le numéro du vol ?|What's the flight number?|ouates ze flaïte nombeur",
+"aero|Aidez-moi à remplir ce formulaire|Help me fill in this form|help mi fille in disse forme",
 /* transport */
-"trans|Prenez un taxi pour moi, s'il vous plaît|Get me a taxi, please|guète mi e takssi pliz",
-"trans|Amenez-moi à cette adresse|Take me to this address|tèïk mi tou diss adresse",
-"trans|À l'aéroport, s'il vous plaît|To the airport, please|tou zi èïropor pliz",
-"trans|C'est combien la course ?|How much is the fare?|haou match iz ze fèür ?",
-"trans|C'est trop cher|That's too expensive|dats tou iksspénssive",
-"trans|Arrêtez-vous ici, s'il vous plaît|Stop here, please|stop hïr pliz",
-"trans|Combien de temps ça prend ?|How long does it take?|haou longe daz it tèïk ?",
-"trans|Où est la station de métro ?|Where is the metro station?|ouèr iz ze métro stéchone ?",
-"trans|Un billet pour …|A ticket to …|e tiquète tou …",
-"trans|Gardez la monnaie|Keep the change|kïp ze tchèn-dje",
-"trans|Vous pouvez rouler plus lentement ?|Can you drive more slowly?|kann iou draïve mor sloli ?",
-"trans|Appelez-moi un taxi|Call me a taxi|kol mi e takssi",
-"trans|Où puis-je louer une voiture ?|Where can I rent a car?|ouèr kann aï rénnte e kar ?",
-"trans|Je dois être là à 8 heures|I need to be there by 8 o'clock|aï nïd tou bi dèr baï èïte oklok",
+"trans|Où est le taxi ?|Where is the taxi?|ouèr iz ze taxeï",
+"trans|Où est l'arrêt de bus ?|Where is the bus stop?|ouèr iz ze bousse stoppe",
+"trans|Où est la station de métro ?|Where is the metro station?|ouèr iz ze métro steuchione",
+"trans|Combien ça coûte ?|How much does it cost?|haoue matche dasse caouste",
+"trans|C'est trop cher|That's too expensive|dats tou iksspensive",
+"trans|Prenez cette adresse, s'il vous plaît|Take this address, please|teïke disse adreusse pliz",
+"trans|Je vais à cet endroit|I'm going to this place|aïm goeuline tou disse pleuïsse",
+"trans|Je vais à l'hôtel…|I'm going to the hotel…|aïm goeuline tou ze hôtel",
+"trans|Arrêtez ici, s'il vous plaît|Stop here, please|stoppe hïr pliz",
+"trans|Vous pouvez attendre ?|Can you wait?|kann iou ouète",
+"trans|Je reviens dans 10 minutes|I'll be back in 10 minutes|aïl bi backe in tene miniteusse",
+"trans|Je pars maintenant|I'm leaving now|aïm liveuline naou",
+"trans|Comment aller à… ?|How do I get to…?|haoue dou aï gueute tou",
+"trans|Est-ce loin ?|Is it far?|izite fare",
+"trans|Appelez-moi un taxi|Call me a taxi|kole mi e taxeï",
+"trans|Un billet pour…|One ticket to…|ouane tikete tou",
+"trans|Le prochain bus est quand ?|When is the next bus?|ouène iz ze neksste bousse",
+"trans|Où est le parking ?|Where is the parking?|ouèr iz ze paroleuline",
+"trans|Je réserve une voiture|I'm booking a car|aïm boukeuline e kare",
 /* hôtel */
-"hotel|J'ai une réservation|I have a reservation|aï hav e rèzeurvéchione",
-"hotel|Au nom de Fontaine|Under the name Fontaine|eundeur ze nëïm Fontèïne",
-"hotel|Une chambre pour deux nuits|A room for two nights|e roume for tou naïtes",
-"hotel|À quelle heure est le départ (check-out) ?|What time is check-out?|ouate taïm iz tchek-aoute ?",
-"hotel|Puis-je avoir la clé, chambre 204 ?|Can I have the key, room 204?|kann aï hav ze kï, roume tou-ou-zeuro-four ?",
-"hotel|La climatisation ne marche pas|The air conditioning doesn't work|ze èïr kondichone-nïng daznte oueurk",
-"hotel|Quel est le mot de passe wifi ?|What is the wifi password?|ouate iz ze ouaïfaï passeuorde",
-"hotel|Le petit-déjeuner est inclus ?|Is breakfast included?|iz breukfeust inkloudide ?",
-"hotel|Pouvez-vous nettoyer ma chambre ?|Can you clean my room?|kann iou klïne maï roume ?",
-"hotel|Il n'y a pas d'eau chaude|There is no hot water|dèr iz no hot ouate-eur",
-"hotel|Je pars ce matin|I'm leaving this morning|aïm livïne diss morneune",
-"hotel|Appelez-moi à 6 heures|Wake me up at 6 / call me at 6|ouèïk mi oup at siks / kol mi at siks",
+"hotel|J'ai une réservation|I have a reservation|aï hav e rezeurvéchione",
+"hotel|Au nom de…|Under the name…|eundeur ze neïm",
+"hotel|Je n'ai pas de réservation|I don't have a reservation|aï done hav e rezeurvéchione",
+"hotel|Une chambre pour deux nuits|A room for two nights|e roume fore tou naïteusse",
+"hotel|À quelle heure est le petit-déjeuner ?|What time is breakfast?|ouate taïme iz breukfeste",
+"hotel|Où est ma chambre ?|Where is my room?|ouèr iz maï roume",
+"hotel|La clé, s'il vous plaît|The key, please|ze ki pliz",
+"hotel|La carte de la chambre, s'il vous plaît|The room card, please|ze roume kard pliz",
+"hotel|Où sont les ascenseurs ?|Where are the lifts?|ouèr ar ze lifteusse",
+"hotel|Le wifi ne marche pas|The wifi doesn't work|ze ouaïfaï dazeunte oueurke",
+"hotel|L'air conditionné ne marche pas|The AC doesn't work|ze èïssi dazeunte oueurke",
+"hotel|Pas d'eau chaude|No hot water|no hotte ouaoureure",
+"hotel|Pouvez-vous nettoyer ma chambre ?|Can you clean my room?|kann iou clïne maï roume",
+"hotel|Puis-je avoir des serviettes ?|Can I have towels?|kann aï hav taoueulss",
+"hotel|Puis-je avoir un adaptateur de prise ?|Can I have a plug adapter?|kann aï hav e pleugue eudapteur",
+"hotel|Je quitte l'hôtel aujourd'hui|I'm checking out today|aïm tcheckine aoute toudeï",
+"hotel|Pouvez-vous garder mes bagages ?|Can you keep my luggage?|kann iou kipe maï lougeudge",
+"hotel|Appelez-moi un taxi à 6 h|Call me a taxi at 6 a.m.|kole mi e taxeï ate siks èïeume",
+"hotel|Il y a un problème dans ma chambre|There's a problem in my room|dèrze e probleume in maï roume",
 /* restaurant */
-"resto|Une table pour deux|A table for two|e tèïbole for tou",
-"resto|Le menu, s'il vous plaît|The menu, please|ze méniou pliz",
-"resto|Que recommandez-vous ?|What do you recommend?|ouate diou iou rèkomende ?",
-"resto|Je vais prendre ceci|I'll take this one|aïl tèïk diss ouane",
-"resto|Une bouteille d'eau|A bottle of water|e boteul ov ouate-eur",
-"resto|Sans glace, s'il vous plaît|No ice, please|no aïss pliz",
-"resto|L'addition, s'il vous plaît|The bill, please|ze bil pliz",
-"resto|C'était délicieux|It was delicious|it ouaz dïlïcheuss",
-"resto|Je suis végétarien|I'm vegetarian|aïm védjïtèriène",
-"resto|Sans porc, s'il vous plaît|No pork, please|no pork pliz|Le porc est très rare au Qatar, la cuisine est halal.",
-"resto|C'est épicé ?|Is it spicy?|iz it sspaïssi ?",
-"resto|À emporter|Take away|tèïk e ouèï",
-"resto|J'ai faim / J'ai soif|I'm hungry / I'm thirsty|aïm hang-eur / aïm teursti",
-"resto|Je voudrais un karak|I'd like a karak|aïd laïk e karake|Le karak (thé au lait épicé) est LA boisson locale.",
-"resto|Je paie par carte|I'll pay by card|aïl pèï baï kard",
-"resto|Service compris ?|Is service included?|iz seurviss inkloudide ?",
-"resto|Où sont les toilettes ?|Where is the restroom?|ouèr iz ze rèsstroume ?",
+"resto|Une table pour deux, s'il vous plaît|A table for two, please|e teuble fore tou pliz",
+"resto|La carte / le menu, s'il vous plaît|The menu, please|ze meniou pliz",
+"resto|Qu'est-ce que vous recommandez ?|What do you recommend?|ouate dou iou reukomende",
+"resto|Je voudrais…|I would like…|aï oude laïke",
+"resto|Un café, s'il vous plaît|A coffee, please|e kofée pliz",
+"resto|Un thé, s'il vous plaît|A tea, please|e ti pliz",
+"resto|De l'eau, s'il vous plaît|Some water, please|sseume ouaoure pliz",
+"resto|De l'eau plate / gazeuse|Still / sparkling water|stile ouaoure / sparkleuline ouaoure",
+"resto|Sans glace|No ice|no aïsse",
+"resto|L'addition, s'il vous plaît|The bill, please|ze bile pliz",
+"resto|Je paie par carte|I'll pay by card|aïl peï baï kard",
+"resto|Je paie en espèces|I'll pay cash|aïl peï keuche",
+"resto|C'était très bon|It was very good|ite ouaze vèri goude",
+"resto|Je n'ai pas commandé ça|I didn't order this|aï dideunte ordeure disse",
+"resto|C'est trop épicé|It's too spicy|itse tou eupaïssï",
+"resto|Je suis végétarien(ne)|I'm vegetarian|aïm vedjitérienne",
+"resto|Sans viande, s'il vous plaît|No meat, please|no mïte pliz",
+"resto|À emporter|To take away|tou teïke e ouèï",
+"resto|Le pourboire est-il inclus ?|Is the tip included?|iz ze tip inkloudede",
+"resto|Le service est-il compris ?|Is service included?|ize seurvis inkloudede",
 /* shopping */
-"shop|C'est combien ?|How much is it?|haou match iz it ?",
-"shop|C'est trop cher pour moi|That's too expensive for me|dats tou iksspénssive for mi",
-"shop|Vous acceptez la carte ?|Do you take card?|diou tèïk kard ?",
-"shop|En espèces|In cash|in keuche",
-"shop|Je regarde seulement|I'm just looking|aïm djeuste loukeuline",
-"shop|Vous pouvez me faire un prix ?|Can you give me a discount?|kann iou gïv mi e diskonte ?",
-"shop|Un reçu, s'il vous plaît|A receipt, please|e rïssite pliz",
-"shop|Où puis-je changer de l'argent ?|Where can I exchange money?|ouèr kann aï ikstchèn-dje meuni ?",
-"shop|Il me faut plus grand / plus petit|I need a bigger / smaller size|aï nïd e bige-eur / smole-eur saïze",
-"shop|Je peux l'essayer ?|Can I try it on?|kann aï traï it one ?",
-"shop|Je prends celui-ci|I'll take this one|aïl tèïk diss ouane",
+"shop|C'est combien ?|How much is it?|haoue matche izite",
+"shop|C'est trop cher|That's too expensive|dats tou iksspensive",
+"shop|Avez-vous moins cher ?|Do you have anything cheaper?|dou iou hav enissine tchipere",
+"shop|Je peux payer par carte ?|Can I pay by card?|kann aï peï baï kard",
+"shop|Je peux voir ?|Can I see it?|kann aï sï ite",
+"shop|Je regarde seulement|I'm just looking|aïme djeuste loukeuline",
+"shop|Je prends ça|I'll take it|aïl teïke ite",
+"shop|Avez-vous la taille au-dessus ?|Do you have a bigger size?|dou iou hav e bigueur saïze",
+"shop|Avez-vous une autre couleur ?|Do you have another color?|dou iou hav e nodeure keuleure",
+"shop|Où est le centre commercial ?|Where is the mall?|ouèr iz ze mole",
+"shop|Où est le marché ?|Where is the market?|ouèr iz ze markète",
+"shop|Avez-vous des rials / des euros ?|Do you have riyals / euros?|dou iou hav rialeusse / eurousse",
+"shop|Le reçu, s'il vous plaît|The receipt, please|ze rissîte pliz",
+"shop|Puis-je l'essayer ?|May I try it on?|meï aï traï ite one",
+"shop|Je peux l'échanger ?|Can I exchange it?|kann aï ikstchainje ite",
+"shop|Le magasin est ouvert ?|Is the shop open?|ize cheupe opeune",
+"shop|À quelle heure fermez-vous ?|What time do you close?|ouate taïme dou iou clouze",
+"shop| Appelez ce numéro|Call this number|kole disse nombeur",
 /* chemin */
-"chemin|Où est … ?|Where is … ?|ouèr iz … ?",
-"chemin|C'est loin d'ici ?|Is it far from here?|iz it far frome hïr ?",
-"chemin|Tournez à gauche / à droite|Turn left / turn right|teurne left / teurne raïte",
-"chemin|Tout droit|Straight ahead|sstrèït e-hède",
-"chemin|Au coin de la rue|Around the corner|e-raouende ze kor-neur",
-"chemin|Vous pouvez me montrer sur la carte ?|Can you show me on the map?|kann iou chomï one ze mèp ?",
-"chemin|Je suis perdu|I'm lost|aïm loste",
-"chemin|Quel est le chemin pour … ?|Which way is … ?|ouitch ouèï iz … ?",
-"chemin|À quelle distance ? / Combien à pied ?|How far? / How far on foot?|haou far ? / haou far one foute ?",
-"chemin|Je dois rejoindre ce point|I need to get to this place|aï nïd tou guète tou diss plèïsse",
+"chemin|Où est… ?|Where is…?|ouèr iz",
+"chemin|Comment aller à… ?|How do I get to…?|haoue dou aï gueute tou",
+"chemin|C'est loin ?|Is it far?|izite fare",
+"chemin|Je peux y aller à pied ?|Can I walk there?|kann aï ouoke dèr",
+"chemin|Tournez à gauche|Turn left|teurne lefte",
+"chemin|Tournez à droite|Turn right|teurne raïte",
+"chemin|Tout droit|Straight on|streïte one",
+"chemin|Où est la sortie ?|Where is the exit?|ouèr iz ze ekssite",
+"chemin|Où suis-je sur ce plan ?|Where am I on this map?|ouèr aïmaï one disse mape",
+"chemin|Pouvez-vous me montrer sur la carte ?|Can you show me on the map?|kann iou chomi one ze mape",
+"chemin|Je cherche cette adresse|I'm looking for this address|aïm loukeuline fore disse adreusse",
+"chemin|Quel est le nom de cet endroit ?|What is this place called?|ouate iz disse pleuïsse kolde",
+"chemin|C'est par ici ?|Is it this way?|izite disse ouèï",
+"chemin|Je reviens d'où je viens|I'm going back|iëm goeuline backe",
+"chemin|Je vais au souk / vieux marché|I'm going to the souk / old market|aïm goeuline tou ze souke / olde markète",
+"chemin|Je vais à la mosquée|I'm going to the mosque|aïm goeuline tou ze moskeue",
 /* urgence */
 "urgence|Au secours !|Help!|help",
-"urgence|Appelez la police !|Call the police!|kol ze peulisse",
-"urgence|Appelez une ambulance !|Call an ambulance!|kol ane am-bioulence",
-"urgence|Au feu !|Fire!|faïeur",
-"urgence|J'ai besoin d'un médecin|I need a doctor|aï nïd e dokteur",
-"urgence|C'est une urgence|It's an emergency|its ane imeurdjenssi",
-"urgence|Ça fait mal ici|It hurts here|it heurts hïr",
-"urgence|J'ai de la fièvre|I have a fever|aï hav e fïveur",
-"urgence|J'ai mal à la tête / au ventre|I have a headache / a stomach ache|aï hav e hède-èïk / e sstomeuk èïk",
-"urgence|Je suis allergique à …|I'm allergic to …|aïm aleurdjik tou …",
-"urgence|Où est l'hôpital le plus proche ?|Where is the nearest hospital?|ouèr iz ze nïreust hoss-pitale ?",
-"urgence|Où est la pharmacie ?|Where is the pharmacy?|ouèr iz ze farmessi ?",
-"urgence|J'ai perdu mon passeport|I lost my passport|aï lorst maï passpor",
-"urgence|On m'a volé mon téléphone|My phone was stolen|maï fone ouaz stoleune",
-"urgence|Ne touchez pas !|Don't touch!|done tatche",
-"urgence|Éloignez-vous !|Step back! / get back!|sstèp back / guète back",
+"urgence|Appelez la police !|Call the police!|kole ze poliss",
+"urgence|Appelez une ambulance !|Call an ambulance!|kole ne ambïoulanç",
+"urgence|Appelez les pompiers !|Call the fire brigade!|kole ze faïeurbriguede",
+"urgence|Il y a un incendie !|There is a fire!|dèr iz e faïeur",
+"urgence|Tout le monde doit évacuer|Everyone must evacuate|èvriouane mousse évakïouète",
+"urgence|J'ai besoin d'un médecin|I need a doctor|aï nide e docteur",
+"urgence|Je suis blessé(e)|I'm injured|aïm injourede",
+"urgence|Je ne me sens pas bien|I don't feel well|aï done file ouel",
+"urgence|J'ai mal ici|It hurts here|ite hurte hïr",
+"urgence|J'ai mal à la tête|I have a headache|aï hav e hèdeékhe",
+"urgence|J'ai des allergies|I have allergies|aï hav aleurdjiss",
+"urgence|Je prends ce médicament|I take this medicine|aï teïke disse meudeussine",
+"urgence|Où est l'hôpital ?|Where is the hospital?|ouèr iz ze hospitale",
+"urgence|Où est la pharmacie ?|Where is the pharmacy?|ouèr iz ze farmassï",
+"urgence|C'est une urgence|It's an emergency|itse ne merdjenceu",
+"urgence|J'ai perdu mon passeport|I've lost my passport|aïv loste maï passeporte",
+"urgence|On m'a volé mon sac|My bag has been stolen|maï bague hase bine stolene",
+"urgence|Attention !|Watch out!|ouatche aoute",
+"urgence|Ne touchez pas !|Don't touch!|done tatce",
+"urgence|Restez calme|Stay calm|steï kolume",
+"urgence|Reculez !|Step back!|stepe backe",
 /* travail */
-"travail|Je suis ici pour une mission professionnelle|I'm here for a work mission|aïm hïr for e oueurk mïchione",
-"travail|Je travaille avec les sapeurs-pompiers|I work with the fire service|aï oueurk ouiss ze faïeur seurvic",
-"travail|J'ai besoin d'une autorisation|I need an authorization|aï nïd ane otor-aïzéchione",
-"travail|Cet équipement est-il autorisé dans le pays ?|Is this equipment allowed in the country?|iss diss ikouipménnte e-laoïde in ze kountri ?",
-"travail|Où puis-je charger ma radio ?|Where can I charge my radio?|ouèr kann aï tchar-dje maï rédio ?",
-"travail|La batterie est vide|The battery is dead|ze batteuri iz dède",
-"travail|J'ai un chargeur de rechange|I have a spare charger|aï hav e sspeür tchar-djeur",
-"travail|Nous avons une réunion à 10 heures|We have a meeting at 10|ouï hav e mïtïne at tène",
-"travail|Voici mes documents|Here are my documents|hïr ar maï do-kiou-ments",
-"travail|Pouvez-vous m'expliquer la procédure ?|Can you explain the procedure?|kann iou iksplèïne ze prossidjeur ?",
-"travail|Dangereux / interdit|Dangerous / forbidden|dèïndjeureuss / forbideune",
-"travail|Je dois remplir ce formulaire|I need to fill in this form|aï nïd tou fil in diss form",
-/* nombres */
-"nombres|Quelle heure est-il ?|What time is it?|ouate taïm iz it ?",
-"nombres|Il est trois heures et demie|It's half past three|its haf passt thrï",
-"nombres|Aujourd'hui / demain / hier|Today / tomorrow / yesterday|tou-dèï / tou-mor-ro / yèssteurdèï",
-"nombres|Ce matin / cet après-midi / ce soir|This morning / this afternoon / this evening|diss morneune / diss afteurnoune / diss ivneune",
-"nombres|Maintenant / plus tard / tout de suite|Now / later / right away|naou / lèïteur / raïte e-ouèï",
-"nombres|Tôt / tard|Early / late|eurli / lèïte",
-"nombres|Tous les jours|Every day|èvri dèï",
-"nombres|Lundi, mardi, mercredi…|Monday, Tuesday, Wednesday…|mondeï, tiouzdeï, ouenzdeï…",
-"nombres|Dans une heure / deux heures|In one hour / in two hours|in ouane aou-eur / in tou aou-eurz",
+"travail|Bonjour, je suis en mission professionnelle|Hello, I'm here on a work mission|heul-lo, aïm hïre one e oueurke mïchione",
+"travail|Je suis marin-pompier|I'm a marine firefighter|aïm e marïne faïeur-faïteur",
+"travail|Voici mon autorisation de mission|Here is my mission authorization|hïr iz maï mïchione otor-aïzéchione",
+"travail|Je travaille avec l'ambassade de France|I work with the French Embassy|aï oueurke ouiss ze French Embassï",
+"travail|C'est du matériel de service|This is service equipment|diss iz seurvis ikouipménnte",
+"travail|Ce matériel est homologué|This equipment is certified|diss ikouipménnte iz seurtifaïède",
+"travail|Où est le point de rendez-vous ?|Where is the meeting point?|ouèr iz ze mïtïne poïnte",
+"travail|Où puis-je déposer le matériel ?|Where can I store the equipment?|ouèr kann aï store ze ikouipménnte",
+"travail|Le matériel part en soute cargo|The equipment goes as cargo|ze ikouipménnte goeuse ass kargo",
+"travail|Qui est le responsable ?|Who is in charge?|hou iz in tcharje",
+"travail|Je cherche mon interlocuteur|I'm looking for my contact|aïm loukeuline fore maï kontakte",
+"travail|Pouvez-vous confirmer le planning ?|Can you confirm the schedule?|kann iou konfïrm ze chedïoule",
+"travail|Le briefing est à quelle heure ?|What time is the briefing?|ouate taïm iz ze brifine",
+"travail|J'ai besoin d'un interprète|I need an interpreter|aï nide ne inteurprète",
+"travail|Pouvez-vous m'écrire en anglais ?|Can you write it in English?|kann iou raïte ite in ingliche",
+"travail|Mon numéro de téléphone|My phone number|maï fone nombeur",
+"travail|Je vous envoie les documents par e-mail|I'll send you the documents by e-mail|aïl sennde iou ze dokeuménnte baï i-meïle",
+"travail|J'ai un problème technique|I have a technical problem|aï hav e teuknikale probleume",
+"travail|Le matériel doit rester ensemble|The equipment must stay together|ze ikouipménnte mousse steï toungeure",
+"travail|Prudence avec les batteries|Be careful with the batteries|bi keurfoule ouiss ze batteriss",
+"travail|Ne pas allumer les radios ici|Do not switch on the radios here|dou note souitche one ze radioss hïr",
+"travail|Où est le local de stockage ?|Where is the storage room?|ouèr iz ze storage roume",
 /* arabe */
-"arabe|Bonjour / salut|Marhaba / Hala|mar-haba / hala|Salutations de tous les jours, très courantes.",
-"arabe|Que la paix soit avec vous (bonjour formel)|As-salam alaykum|assalam alèïkoume|Réponse : « Wa alaykum as-salam » (oua alèïkoum assalam).",
-"arabe|Merci|Shukran|choukran|Merci beaucoup : « Shukran jazeelan » (choukran djezïlane).",
-"arabe|Je vous en prie / pardon|Afwan|afouane|Sert aussi d'excuse pour demander quelque chose.",
-"arabe|S'il plaît à Dieu (on verra)|Insha'Allah|in-challa|À employer systématiquement quand on parle du futur.",
-"arabe|Comme Dieu le veut (compliment)|Masha'Allah|machalla|Pour complimenter sans porter malheur.",
-"arabe|Allez ! / viens !|Yalla|yalla|Très courant pour presser ou encourager.",
-"arabe|C'est bon / ça suffit / terminé|Khalas|khalass|Pour clore un sujet ou dire « stop, ça va ».",
-"arabe|Je voudrais un karak (thé au lait)|Abee wahid karak|abi ouahide karake|La phrase de survie n°1 au Qatar 🙂",
-"arabe|Oui / Non|Na'am / La|na-am / la"
+"arabe|Bonjour / Salam|Hello / Salam|heul-lo / sallamme",
+"arabe|Merci (choukran)|Thank you (shukran)|seunkiou / choukrann",
+"arabe|S'il vous plaît (min fadlik)|Please (min fadlik)|pliz / mine fadleuk",
+"arabe|Oui / Non (naam / la)|Yes / No (naam / la)|yès la / naam / lla",
+"arabe|Excusez-moi (la samaht)|Excuse me (la samaht)|èkskiouz mi / la sammeuhe",
+"arabe|Combien ? (kam?)|How much? (kam?)|haoue matche / kamm",
+"arabe|Au revoir (maa salama)|Goodbye (maa salama)|goud baï / ma sallemma",
+"arabe|Pas de problème (mushi moushkil)|No problem (mushi moushkil)|no probleume / mouchi moucheukile",
+"arabe|De rien (ahlan wa sahlan)|You're welcome (ahlan wa sahlan)|iour ouelkeum / ahlann oua sahllann",
+"arabe|Bienvenue (ahlan)|Welcome (ahlan)|ouelkeum / ahlann",
+"arabe|Allez-y (tafaddal)|Go ahead (tafaddal)|go haïde / tafaddall",
+"arabe|Inchallah|Inshallah (God willing)|incheullllah",
+"arabe|Je ne parle pas arabe|I don't speak Arabic|aï done ssppik arabik",
+"arabe|Vous parlez français ?|Do you speak French?|dou iou sspik frenche",
+"arabe|Halal|Halal|allall",
+"arabe|Saha ! (bon appétit / à ta santé)|Saha! (enjoy / cheers)|sahha",
+"arabe|Yalla (allez / viens)|Yalla (let's go)|yallla",
+"arabe|Marhaba (bienvenue)|Marhaba (welcome)|marhabba"
 ];
 
-/* ---------- Données : DICTIONNAIRE (fr|en|prononciation|catégorie) ---------- */
+/* ---------------- mots clés : id|fr|en|pro|cat ---------------- */
 var W = [
-"bonjour|hello|heullo|base","salut|hi|haï|base","oui|yes|yès|base","non|no|no|base",
-"merci|thank you|seunkiou|base","pardon|sorry|sorri|base","s'il vous plaît|please|pliz|base",
-"eau|water|ouate-eur|base","nourriture|food|foude|base","manger|to eat|tou ite|base","boire|to drink|tou drinke|base",
-"toilettes|restroom|rèsstroume|base","maintenant|now|naou|base","aujourd'hui|today|toudèï|base",
-"demain|tomorrow|toumorro|base","hier|yesterday|yèssteurdèï|base","matin|morning|morneune|base",
-"soir|evening|ivneune|base","nuit|night|naïte|base","heure|time|taïme|base","gauche|left|left|base",
-"droite|right|raïte|base","tout droit|straight ahead|sstrèïte hède|base","loin|far|far|base",
-"près|near|nïr|base","ici|here|hïr|base","là-bas|over there|euv-eur dèr|base","grand|big|bigue|base",
-"petit|small|smole|base","chaud|hot|hot|base","froid|cold|kould|base","ouvert|open|eupène|base",
-"fermé|closed|klouzd|base","libre|free|frï|base","facile|easy|ïzi|base","difficile|hard|harde|base",
-"rapide|fast|fasst|base","lent|slow|slo|base","beau|beautiful|biouteufoul|base","nouveau|new|niou|base",
-"vieux|old|old|base","bon|good|goude|base","mauvais|bad|bède|base","cher|expensive|iksspénssive|base",
-"pas cher|cheap|tchip|base","argent|money|meuni|base","prix|price|praïsse|base","sans|without|ouizaout|base",
-"avec|with|ouiss|base","et|and|ende|base","ou|or|ore|base","mais|but|bote|base",
-"parce que|because|bikoz|base","combien|how much|haou match|base","pourquoi|why|ouaï|base",
-"où|where|ouèr|base","quand|when|ouène|base","qui|who|hou|base","quoi|what|ouate|base",
-"comment|how|haou|base","ami|friend|frennde|base","gens|people|pipole|base","homme|man|mane|base",
-"femme|woman|ouomenne|base","enfant|child|tchaïlde|base","téléphone|phone|fone|base",
-"appeler|to call|tou kole|base","numéro|number|neumbeur|base","message|text message|mèsse-dje|base",
-"aéroport|airport|èïropor|voyage","avion|plane|plèïne|voyage","vol|flight|flaïte|voyage",
-"porte d'embarquement|gate|guèïte|voyage","embarquement|boarding|bordïne|voyage",
-"carte d'embarquement|boarding pass|bordïne pass|voyage","enregistrement|check-in|tchek-in|voyage",
-"bagages|luggage|lageudge|voyage","passeport|passport|passpor|voyage","visa|visa|vissa|voyage",
-"douane|customs|kasteumz|voyage","retard|delay|dilèï|voyage","annulé|cancelled|kanselde|voyage",
-"taxi|taxi|takssi|voyage","métro|metro|métro|voyage","bus|bus|beuss|voyage","billet|ticket|tiquète|voyage",
-"station|station|sstéchione|voyage","hôtel|hotel|hotèle|voyage","chambre|room|roume|voyage",
-"clé|key|kï|voyage","réception|front desk|fronde desk|voyage","réservation|reservation|rèzeurvéchione|voyage",
-"ascenseur|elevator|èlïveuteur|voyage","étage|floor|flor|voyage","itinéraire|route|route|voyage",
-"carte|map|mèp|voyage","adresse|address|adresse|voyage","voiture|car|kar|voyage","louer|to rent|tou rénnte|voyage",
-"petit-déjeuner|breakfast|breukfeust|nourriture","déjeuner|lunch|lontch|nourriture","dîner|dinner|dïne-eur|nourriture",
-"restaurant|restaurant|rèsstorante|nourriture","menu|menu|méniou|nourriture","addition|the bill|ze bil|nourriture",
-"pourboire|tip|tip|nourriture","serveur|waiter|ouèïteur|nourriture","café|coffee|kofï|nourriture",
-"thé|tea|tï|nourriture","karak|karak tea|karake|nourriture","jus|juice|djouss|nourriture","lait|milk|milk|nourriture",
-"pain|bread|brède|nourriture","riz|rice|raïsse|nourriture","poulet|chicken|tchïkène|nourriture",
-"bœuf|beef|bïf|nourriture","poisson|fish|fiche|nourriture","légumes|vegetables|védjtébeulz|nourriture",
-"fruit|fruit|frouite|nourriture","fromage|cheese|tchïz|nourriture","œuf|egg|ègue|nourriture",
-"sel|salt|ssolte|nourriture","sucre|sugar|chougeur|nourriture","glace (glaçon)|ice|aïsse|nourriture",
-"épicé|spicy|sspaïsse|nourriture","délicieux|delicious|dïlïcheusse|nourriture","faim|hunger|hangeur|nourriture",
-"soif|thirst|teurst|nourriture","halal|halal|halal|nourriture","porc|pork|pork|nourriture",
-"alcool|alcohol|alkohol|nourriture","soda|soda|ssoda|nourriture","bouteille|bottle|boteul|nourriture",
-"verre|glass|glasse|nourriture","assiette|plate|plèïte|nourriture","eau plate|still water|ssdille ouateur|nourriture",
-"eau gazeuse|sparkling water|ssparkline ouateur|nourriture","végétarien|vegetarian|védjïtèriène|nourriture",
-"carte bancaire|credit card|krédite kard|shopping","espèces|cash|keuche|shopping","monnaie|change|tchèn-dje|shopping",
-"reçu|receipt|rïssite|shopping","boutique|shop|chop|shopping","marché|market|markète|shopping",
-"supermarché|supermarket|ssoupeurmarkète|shopping","acheter|to buy|tou baï|shopping","payer|to pay|tou pèï|shopping",
-"taille|size|saïze|shopping","essayer|to try on|tou traï one|shopping","échanger|to exchange|tou ikstchèn-dje|shopping",
-"docteur|doctor|dokteur|santé","hôpital|hospital|hosspïtale|santé","pharmacie|pharmacy|farmessï|santé",
-"médecin|doctor|dokteur|santé","police|police|peulisse|santé","pompiers|fire brigade|faïeur briguede|santé",
-"ambulance|ambulance|am-bioulence|santé","urgence|emergency|imeurdjenssi|santé","feu|fire|faïeur|santé",
-"fumée|smoke|smok|santé","danger|danger|dèïndjeur|santé","blessure|injury|ïndjeurï|santé",
-"douleur|pain|pèïne|santé","malade|sick|sïk|santé","médicament|medicine|médssïne|santé",
-"allergie|allergy|aleurdjï|santé","tête|head|hède|santé","ventre|stomach|sstomeuk|santé",
-"dos|back|back|santé","main|hand|hannde|santé","pied|foot|foute|santé","brûlure|burn|beurne|santé",
-"sang|blood|bloode|santé","fièvre|fever|fïveur|santé","secours|help / rescue|help / rèsskiou|santé",
-"radio|radio|rédïo|tech","batterie|battery|batteurï|tech","chargeur|charger|tchardjeur|tech",
-"charger|to charge|tou tchardje|tech","antenne|antenna|annetenna|tech","fréquence|frequency|frïkouenssï|tech",
-"canal|channel|tchannèle|tech","volume|volume|volioume|tech","réseau|network|netteuourk|tech",
-"signal|signal|ssïgneul|tech","équipement|equipment|ïkouipménnte|tech","appareil|device|dïvaïsse|tech",
-"alimentation|power supply|paoueur seuplaï|tech","tension|voltage|voltédje|tech","volt|volt|volte|tech",
-"watt|watt|ouotte|tech","câble|cable|kèïbole|tech","prise électrique|power socket|paoueur sokïte|tech",
-"lampe|lamp|lampe|tech","torche|torch|torch|tech","pile|battery (small)|batteurï|tech",
-"gants|gloves|glovz|tech","casque|helmet|hèlmète|tech","bottes|boots|boutes|tech","outil|tool|toule|tech",
-"échelle|ladder|ladeur|tech","pompier|firefighter|faïeurfaïteur|tech","camion|truck|treuk|tech",
-"permis|permit|peurmïte|tech","licence|licence|laïsensse|tech","autorisation|authorization|otoraïzéchione|tech",
-"documents|papers|pèïpeurz|tech","formulaire|form|form|tech","réunion|meeting|mïtïne|tech",
-"collègue|colleague|kolègue|tech","chef|boss|bosse|tech","horaires|schedule|chédjoule|tech",
-"équipe|team|tïme|tech","matériel|gear / equipment|guïr|tech","sac|bag|bague|tech"
+"w1|bonjour|hello|heul-lo|base",
+"w2|merci|thank you|seunkiou|base",
+"w3|oui|yes|yès|base",
+"w4|non|no|no|base",
+"w5|eau|water|ouaoure|voyage",
+"w6|toilettes|toilets|toiletteusse|voyage",
+"w7|taxi|taxi|taxeï|voyage",
+"w8|hôtel|hotel|houtel|voyage",
+"w9|manger|to eat|tou ite|nourriture",
+"w10|boire|to drink|tou drinke|nourriture",
+"w11|faim|hungry|heungri|nourriture",
+"w12|soif|thirsty|seursti|nourriture",
+"w13|argent|money|meunï|shopping",
+"w14|cher|expensive|iksspensive|shopping",
+"w15|gauche|left|lefte|voyage",
+"w16|droite|right|raïte|voyage",
+"w17|douleur|pain|peïnne|santé",
+"w18|médecin|doctor|docteure|santé",
+"w19|hôpital|hospital|hospitale|santé",
+"w20|police|police|poliss|santé",
+"w21|téléphone|phone|fone|tech",
+"w22|batterie|battery|batterï|tech",
+"w23|wifi|wifi|ouaïfaï|tech",
+"w24|numéro|number|nombeur|tech",
+"w25|réseau|network|netoueurke|tech",
+"w26|appeler|to call|tou kole|base",
+"w27|aide|help|help|base",
+"w28|ou|where|ouèr|base",
+"w29|quand|when|ouène|base",
+"w30|combien|how much|haoue matche|base",
+"w31|pourquoi|why|ouaï|base",
+"w32|qui|who|hou|base",
+"w33|je|I|aï|base",
+"w34|tu / vous|you|iou|base",
+"w35|je voudrais|I would like|aï oude laïke|base",
+"w36|peux / pouvez|can|kann|base",
+"w37|vouloir|to want|tou ouante|base",
+"w38|ici|here|hïr|voyage",
+"w39|là-bas|over there|ouveur dèr|voyage",
+"w40|maintenant|now|naou|base",
+"w41|aujourd'hui|today|toudeï|base",
+"w42|demain|tomorrow|toumorrow|base",
+"w43|hier|yesterday|yesterdaï|base",
+"w44|matin|morning|morneune|base",
+"w45|soir|evening|ivneune|base",
+"w46|nuit|night|naïte|base",
+"w47|heure|hour / time|aoueure|base",
+"w48|ouvert|open|opeune|voyage",
+"w49|fermé|closed|clouzde|voyage",
+"w50|gratuit|free|fri|shopping",
+"w51|problème|problem|probleume|base",
+"w52|comprendre|to understand|tou andeurstennde|base",
+"w53|parler|to speak|tou sspik|base",
+"w54|anglais|English|ingliche|base",
+"w55|français|French|frenche|base",
+"w56|arabe|Arabic|arabik|base",
+"w57|métro|metro|métro|voyage",
+"w58|bus|bus|bousse|voyage",
+"w59|train|train|treïne|voyage",
+"w60|avion|plane|pleuïne|voyage",
+"w61|vol|flight|flaïte|voyage",
+"w62|billet|ticket|tikete|voyage",
+"w63|passeport|passport|passeporte|voyage",
+"w64|valise|suitcase|sioukeuçèse|voyage",
+"w65|bagage|luggage|lougeudge|voyage",
+"w66|chambre|room|roume|voyage",
+"w67|clé|key|ki|voyage",
+"w68|carte (paiement)|card|kard|shopping",
+"w69|espèces|cash|keuche|shopping",
+"w70|prix|price|praïsse|shopping",
+"w71|marché|market|markète|shopping",
+"w72|magasin|shop|choppe|shopping",
+"w73|pharmacie|pharmacy|farmassï|santé",
+"w74|médicament|medicine|meudeussine|santé",
+"w75|urgence|emergency|merdjenceu|santé",
+"w76|incendie|fire|faïeur|santé",
+"w77|pompiers|firefighters|faïeurfaïteuress|santé",
+"w78|ambulance|ambulance|ambïoulanç|santé",
+"w79|secours|rescue|reussciou|santé",
+"w80|danger|danger|deundjeure|santé"
 ];
 
-/* ---------- Nombres ---------- */
-var NUMW = {
-  0:["zero","zéro"],1:["one","ouane"],2:["two","tou"],3:["three","thrï"],4:["four","for"],5:["five","faïve"],
-  6:["six","siks"],7:["seven","ssevène"],8:["eight","èïte"],9:["nine","naïne"],10:["ten","tène"],
-  11:["eleven","ïlèvène"],12:["twelve","touelv"],13:["thirteen","teurtïne"],14:["fourteen","fortïne"],
-  15:["fifteen","fïftïne"],16:["sixteen","sïkstïne"],17:["seventeen","ssèvèntïne"],18:["eighteen","èïtïne"],
-  19:["nineteen","naïntïne"],20:["twenty","touenti"],30:["thirty","teurti"],40:["forty","forti"],
-  50:["fifty","fïfti"],60:["sixty","sïksti"],70:["seventy","ssèvènti"],80:["eighty","èïti"],90:["ninety","naïnti"],
-  100:["hundred","handrede"],1000:["thousand","saouzeunde"],1000000:["million","mïlïonne"]
-};
-function numToEn(n){
-  if(n===0) return "zero";
-  function under1000(x){
-    var parts=[];
-    var h=Math.floor(x/100); if(h>0){ parts.push(NUMW[h][0], "hundred"); }
-    var r=x%100;
-    if(r>0){
-      if(r<20) parts.push(NUMW[r][0]);
-      else{
-        parts.push(NUMW[Math.floor(r/10)*10][0]);
-        if(r%10>0) parts.push("-", NUMW[r%10][0]);
-      }
-    }
-    return parts.join(" ").replace(" - ","-");
-  }
-  function caps(x){ return under1000(x); }
-  var out=[];
-  var m=Math.floor(n/1000000);
-  if(m>0){ out.push(under1000(m),"million"); n%=1000000; }
-  var t=Math.floor(n/1000);
-  if(t>0){ out.push(under1000(t),"thousand"); n%=1000; }
-  if(n>0) out.push(under1000(n));
-  return out.join(" ");
-}
-function numPro(en){
-  var map={zero:"zéro",one:"ouane",two:"tou",three:"thrï",four:"for",five:"faïve",six:"siks",
-    seven:"ssevène",eight:"èïte",nine:"naïne",ten:"tène",eleven:"ïlèvène",twelve:"touelv",
-    thirteen:"teurtïne",fourteen:"fortïne",fifteen:"fïftïne",sixteen:"sïkstïne",seventeen:"ssèvèntïne",
-    eighteen:"èïtïne",nineteen:"naïntïne",twenty:"touenti",thirty:"teurti",forty:"forti",fifty:"fïfti",
-    sixty:"sïksti",seventy:"ssèvènti",eighty:"èïti",ninety:"naïnti",hundred:"handrede",
-    thousand:"saouzeunde",million:"mïlïonne"};
-  return en.split(/[\s-]+/).map(function(w){ return map[w]||w; }).join(" ");
-}
-
-/* ---------- Helpers ---------- */
+/* ---------------- utils ---------------- */
+var NF = [
+  ["à|a|â|ä","a"],["é|è|ê|ë","e"],["î|ï","i"],["ô|ö","o"],["ù|û|ü","u"],["ç","c"],
+  ["œ","oe"],["æ","ae"],["'|’"," "],["-|—|–"," "]
+];
 function norm(s){
-  return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/['']/g," ");
+  var r = String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  for (var i=0;i<NF.length;i++){ var p = NF[i][0].split("|"); for (var j=0;j<p.length;j++){ r = r.split(p[j]).join(NF[i][1]); } }
+  return r.replace(/\s+/g," ").trim();
 }
-function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function parseP(row){ var p=row.split("|"); return {cat:p[0],fr:p[1],en:p[2],pro:p[3],note:p[4]||"",id:"p"+P.indexOf(row)}; }
-function parseW(row){ var p=row.split("|"); return {fr:p[0],en:p[1],pro:p[2],cat:p[3],id:"w"+W.indexOf(row)}; }
-var PH = P.map(parseP), WD = W.map(parseW);
+function esc(s){
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function tokens(s){ return norm(s).split(/[^a-z0-9]+/).filter(function(t){ return t.length>0; }); }
 
-/* ---------- Synthèse vocale ---------- */
-function speak(text, lang){
+/* ---------------- TTS (synthèse vocale de l'appareil, hors ligne) ---------------- */
+var TTS = (function(){
+  try{ return !!window.speechSynthesis; }catch(e){ return false; }
+})();
+function speak(txt, lang){
+  if (!TTS || !txt) return;
   try{
-    if(!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = lang || "en-US"; u.rate = 0.85;
+    var u = new SpeechSynthesisUtterance(txt);
+    u.lang = lang || "en-US"; u.rate = 0.9;
     window.speechSynthesis.speak(u);
   }catch(e){}
 }
-var TTS = !!window.speechSynthesis;
 
-/* ---------- Favoris ---------- */
-function isFav(id){ return favs.indexOf(id)>=0; }
-function toggleFav(id){
-  var i=favs.indexOf(id);
-  if(i>=0) favs.splice(i,1); else favs.push(id);
-  saveFavs(favs); render();
+/* ---------------- stockage local ---------------- */
+var memStore = {};
+function store(k, v){
+  try{
+    if (v === undefined){ return localStorage.getItem(k); }
+    localStorage.setItem(k, v); return v;
+  }catch(e){
+    if (v === undefined){ return memStore[k] || null; }
+    memStore[k] = v; return v;
+  }
+}
+function loadFavs(){
+  try{ return JSON.parse(store("qatar-favs") || "[]"); }catch(e){ return []; }
+}
+function saveFavs(a){ store("qatar-favs", JSON.stringify(a)); }
+var favs = loadFavs();
+
+/* ================================================================
+   TRADUCTEUR HORS LIGNE
+   1) Phrases types les plus proches (recherche floue FR ou EN)
+   2) Traduction mot à mot (dictionnaire embarqué + nombres)
+   ================================================================ */
+
+/* expressions multi-mots, appliquées en priorité (clés normalisées) */
+var MULTI = [
+  ["qu est-ce que", "what"],
+  ["est-ce que", ""],
+  ["il n y a pas", "there is no"],
+  ["il y a", "there is"],
+  ["s il vous plait", "please"],
+  ["merci beaucoup", "thank you very much"],
+  ["je voudrais", "I would like"],
+  ["j aimerais", "I would like"],
+  ["j ai", "I have"],
+  ["tu as", "you have"],
+  ["il a", "he has"],
+  ["elle a", "she has"],
+  ["nous avons", "we have"],
+  ["vous avez", "you have"],
+  ["ils ont", "they have"],
+  ["je suis", "I am"],
+  ["tu es", "you are"],
+  ["il est", "he is"],
+  ["elle est", "she is"],
+  ["nous sommes", "we are"],
+  ["vous etes", "you are"],
+  ["ils sont", "they are"],
+  ["de l eau", "some water"],
+  ["excusez moi", "excuse me"],
+  ["tout de suite", "right away"],
+  ["tout droit", "straight on"],
+  ["aujourd hui", "today"],
+  ["petit dejeuner", "breakfast"],
+  ["mot de passe", "password"],
+  ["quelque chose", "something"],
+  ["quelqu un", "someone"],
+  ["a l aide", "help"],
+  ["au secours", "help"],
+  ["je m appelle", "my name is"],
+  ["comment ca va", "how are you"],
+  ["rendez vous", "meeting"],
+  ["marin pompier", "marine firefighter"],
+  ["ca coute", "it costs"],
+  ["comment aller", "how to get"]
+].sort(function(a,b){ return b[0].length - a[0].length; });
+
+/* dictionnaire mot à mot FR → EN (clés normalisées, sans accents) */
+var DICO = [
+  ["je","I"],["tu","you"],["il","he"],["elle","she"],["on","we"],["nous","we"],
+  ["vous","you"],["ils","they"],["elles","they"],["moi","me"],["me","me"],
+  ["toi","you"],["te","you"],["lui","him"],["eux","them"],
+  ["mon","my"],["ma","my"],["mes","my"],["ton","your"],["ta","your"],["tes","your"],
+  ["son","his"],["sa","his"],["ses","his"],["notre","our"],["nos","our"],
+  ["votre","your"],["vos","your"],["leur","their"],
+  ["ce","this"],["cet","this"],["cette","this"],["ces","these"],
+  ["le","the"],["la","the"],["les","the"],["l","the"],
+  ["un","a"],["une","a"],["des","some"],["du","some"],["de","of"],["d","of"],
+  ["a","to"],["au","to the"],["aux","to the"],
+  ["et","and"],["ou","where"],["avec","with"],["sans","without"],["pour","for"],
+  ["dans","in"],["sur","on"],["sous","under"],["chez","at"],["ici","here"],
+  ["pas","not"],["plus","more"],["moins","less"],["tres","very"],["trop","too"],
+  ["aussi","also"],["toujours","always"],["jamais","never"],["tout","all"],
+  ["tous","all"],["rien","nothing"],["oui","yes"],["non","no"],
+  ["bien","well"],["bon","good"],["mauvais","bad"],["grand","big"],["petit","small"],
+  ["gros","big"],["beau","beautiful"],["vieux","old"],["nouveau","new"],
+  ["chaud","hot"],["froid","cold"],["propre","clean"],["sale","dirty"],
+  ["ouvert","open"],["ferme","closed"],["libre","free"],["occupe","busy"],
+  ["gratuit","free"],["proche","near"],["loin","far"],["gauche","left"],
+  ["droite","right"],["haut","up"],["bas","down"],["vite","fast"],
+  ["lentement","slowly"],["beaucoup","a lot"],["peu","little"],["assez","enough"],
+  ["maintenant","now"],["tard","late"],["tot","early"],["demain","tomorrow"],
+  ["hier","yesterday"],["matin","morning"],["soir","evening"],["nuit","night"],
+  ["jour","day"],["semaine","week"],["mois","month"],["an","year"],
+  ["heure","hour"],["minute","minute"],
+  ["quand","when"],["comment","how"],["combien","how much"],["pourquoi","why"],
+  ["qui","who"],["quoi","what"],["quel","which"],["quelle","which"],
+  ["nombre","number"],["numero","number"],
+  /* verbes */
+  ["suis","am"],["es","are"],["est","is"],["sommes","are"],["etes","are"],["sont","are"],
+  ["ai","have"],["as","have"],["avons","have"],["avez","have"],["ont","have"],
+  ["vais","go"],["vas","go"],["va","go"],["allons","go"],["allez","go"],["vont","go"],
+  ["aller","to go"],["viens","come"],["venez","come"],["venir","to come"],
+  ["peux","can"],["peut","can"],["pouvez","can"],["pouvoir","to be able"],
+  ["veux","want"],["veut","wants"],["voulons","want"],["voulez","want"],["vouloir","to want"],
+  ["dois","must"],["doit","must"],["devez","must"],["devoir","to have to"],
+  ["sais","know"],["sait","know"],["savez","know"],["savoir","to know"],["connais","know"],
+  ["parle","speak"],["parles","speak"],["parlez","speak"],["parlent","speak"],["parler","to speak"],
+  ["comprends","understand"],["comprenez","understand"],["comprendre","to understand"],
+  ["compris","understood"],
+  ["cherche","look for"],["cherches","look for"],["chercher","to look for"],["cherchez","look for"],
+  ["trouve","find"],["trouver","to find"],
+  ["appelle","call"],["appelez","call"],["appeler","to call"],["appele","call"],
+  ["aider","to help"],["aide","help"],["aidez","help"],
+  ["achete","buy"],["achetes","buy"],["achetez","buy"],["acheter","to buy"],
+  ["prends","take"],["prenez","take"],["prendre","to take"],
+  ["mange","eat"],["mangez","eat"],["manger","to eat"],
+  ["bois","drink"],["buvez","drink"],["boire","to drink"],
+  ["vois","see"],["voyez","see"],["voir","to see"],["voit","sees"],
+  ["travaille","work"],["travaillez","work"],["travailler","to work"],
+  ["perdu","lost"],["oublie","forgotten"],
+  ["reste","stay"],["restez","stay"],["rester","to stay"],
+  ["habite","live"],["ecoute","listen"],["ecoutez","listen"],
+  ["ecris","write"],["ecrivez","write"],["ecrire","to write"],
+  ["attends","wait"],["attendez","wait"],["attendre","to wait"],
+  ["utilisez","use"],["utiliser","to use"],
+  ["montre","show"],["montrez","show"],["montrer","to show"],
+  ["apporte","bring"],["apportez","bring"],["apporter","to bring"],
+  ["envoie","send"],["envoyez","send"],["envoyer","to send"],
+  ["charger","to charge"],["recharger","to recharge"],["charge","charging"],
+  ["nettoye","clean"],["nettoyez","clean"],
+  ["arrete","stop"],["arretez","stop"],
+  ["ouvre","open"],["ouvrez","open"],
+  ["confirme","confirm"],["confirmez","confirm"],
+  ["depose","store"],["deposer","to store"],
+  ["vole","fly"],["volez","fly"],["voler","to fly"],
+  ["paye","pay"],["payez","pay"],["payer","to pay"],
+  ["monte","go up"],["montez","go up"],["descends","go down"],["descendez","go down"],
+  /* nourriture */
+  ["eau","water"],["pain","bread"],["viande","meat"],["poulet","chicken"],
+  ["poisson","fish"],["riz","rice"],["pates","pasta"],["legumes","vegetables"],
+  ["fromage","cheese"],["dessert","dessert"],["dejeuner","lunch"],["diner","dinner"],
+  ["cafe","coffee"],["the","tea"],["lait","milk"],["sucre","sugar"],["sel","salt"],
+  ["glace","ice"],["biere","beer"],["vin","wine"],["alcool","alcohol"],["porc","pork"],
+  ["faim","hunger"],["soif","thirst"],
+  /* lieux & voyage */
+  ["salle","room"],["chambre","room"],["cle","key"],["clef","key"],
+  ["ascenseur","elevator"],["reception","reception"],["etage","floor"],["lit","bed"],
+  ["serviette","towel"],["fenetre","window"],["porte","door"],["toilettes","toilets"],
+  ["toilette","toilets"],["douche","shower"],["savon","soap"],
+  ["wifi","wifi"],["internet","internet"],["telephone","phone"],["portable","phone"],
+  ["batterie","battery"],["pile","battery"],["batteries","batteries"],
+  ["taxi","taxi"],["metro","metro"],["bus","bus"],["train","train"],["avion","plane"],
+  ["aeroport","airport"],["billet","ticket"],["vol","flight"],["valise","suitcase"],
+  ["bagage","luggage"],["bagages","luggage"],["sac","bag"],["passeport","passport"],
+  ["police","police"],["hopital","hospital"],["medecin","doctor"],["docteur","doctor"],
+  ["pharmacie","pharmacy"],["medicament","medicine"],["infirmier","nurse"],
+  ["pompiers","firefighters"],["pompier","firefighter"],["feu","fire"],["incendie","blaze"],
+  ["urgence","emergency"],["danger","danger"],["secours","rescue"],["douleur","pain"],
+  ["mal","pain"],["tete","head"],["ventre","stomach"],["bras","arm"],["jambe","leg"],
+  ["sang","blood"],["ambulance","ambulance"],["blesse","injured"],
+  ["argent","money"],["prix","price"],["euro","euro"],["euros","euros"],
+  ["carte","card"],["especes","cash"],["monnaie","change"],["recu","receipt"],
+  ["marche","market"],["magasin","shop"],["boutique","shop"],["centre","mall"],
+  ["homme","man"],["femme","woman"],["enfant","child"],["enfants","children"],
+  ["ami","friend"],["famille","family"],
+  ["travail","work"],["materiel","equipment"],["radio","radio"],["radios","radios"],
+  ["casque","headset"],["reseau","network"],["signal","signal"],["antenne","antenna"],
+  ["mission","mission"],["equipe","team"],["chef","chief"],["collegue","colleague"],
+  ["nom","name"],["adresse","address"],["rue","street"],["place","square"],
+  ["plan","map"],["ville","city"],["pays","country"],["probleme","problem"],
+  ["problemes","problems"],["solution","solution"],["question","question"],
+  ["reponse","answer"],["mot","word"],["phrase","sentence"],["lettre","letter"],
+  ["papier","paper"],["stylo","pen"],["livre","book"],["document","document"],
+  ["documents","documents"],["dossier","file"],
+  ["francais","French"],["anglais","English"],["arabe","Arabic"],
+  ["interprete","interpreter"],["planning","schedule"],["briefing","briefing"],
+  ["hotel","hotel"],["restaurant","restaurant"],["menu","menu"],["addition","bill"],
+  ["pourboire","tip"],["service","service"],["souk","souk"],["mosquee","mosque"],
+  ["plage","beach"],["bateau","boat"],["port","port"],["parking","parking"],
+  ["voiture","car"],["adresse","address"],["contact","contact"],["numero","number"],
+  ["autorisation","authorization"],["responsable","manager"],["embarquement","boarding"],
+  ["douane","customs"],["declaration","declaration"],["fret","cargo"],["cargo","cargo"],
+  ["soute","hold"],["stockage","storage"],["local","room"],["briefing","briefing"]
+];
+
+/* cartes inversées (dictionnaire EN → FR pour le sens EN → FR) */
+function buildMaps(){
+  var fw = {}, rev = {};
+  for (var i=0;i<DICO.length;i++){
+    var k = DICO[i][0], v = DICO[i][1];
+    if (!(k in fw)) fw[k] = v;
+    var ve = norm(v);
+    if (!(ve in rev)) rev[ve] = k;
+  }
+  return { fw: fw, rev: rev };
+}
+var MAPS = buildMaps();
+
+function escRe(s){
+  var r = "";
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charAt(i);
+    r += ("^"===c || "$"===c || "*"===c || "+"===c || "."===c || "?"===c ||
+          "("===c || ")"===c || "|"===c || "["===c || "]"===c || "{"===c ||
+          "}"===c || "\\"===c) ? "\\"+c : c;
+  }
+  return r;
+}
+function applyMulti(s, dir){
+  var list = MULTI, i, re, vals = [];
+  if (dir === "ef"){
+    list = MULTI.map(function(m){ return [norm(m[1]), m[0]]; }).sort(function(a,b){ return b[0].length-a[0].length; });
+  }
+  for (i=0;i<list.length;i++){
+    re = new RegExp("(^|\\s)"+escRe(list[i][0])+"(?=\\s|$)", "g");
+    s = s.replace(re, function(mm, p1){
+      vals.push(list[i][1]);
+      return p1 + "M" + (vals.length-1) + " ";
+    });
+  }
+  return { s: s.replace(/\s+/g," ").trim(), vals: vals };
+}
+function lookupWord(w, map){
+  if (w in map) return map[w];
+  if (w.length > 2 && /s$/.test(w) && (w.slice(0,-1) in map)) return map[w.slice(0,-1)];
+  if (w.length > 3 && /es$/.test(w) && (w.slice(0,-2) in map)) return map[w.slice(0,-2)];
+  if (w.length > 2 && /x$/.test(w) && (w.slice(0,-1) in map)) return map[w.slice(0,-1)];
+  return null;
 }
 
-/* ---------- Rendu ---------- */
-var elList = document.getElementById("list");
-var elChips = document.getElementById("chips");
-var elQ = document.getElementById("q");
-var elClear = document.getElementById("clear");
-var currentCat = "base";
-var searchVal = "";
-
-function phraseCard(p){
-  var fav = isFav(p.id) ? " on" : "";
-  return '<div class="card'+(isFav(p.id)?" fav":"")+'" data-id="'+p.id+'">'
-    +'<div class="fr">'+esc(p.fr)+'</div>'
-    +'<div class="en">'+esc(p.en)+'</div>'
-    +(p.pro?'<div class="pro">'+esc(p.pro)+'</div>':'')
-    +(p.note?'<div class="note">💡 '+esc(p.note)+'</div>':'')
-    +'<div class="actions">'
-    +(TTS?'<button class="abtn big act-tts" data-en="'+esc(p.en)+'">🔊 Écouter</button>':'')
-    +'<button class="abtn act-fav'+fav+'">⭐</button>'
-    +'</div></div>';
+/* nombres en toutes lettres */
+var U=["zero","one","two","three","four","five","six","seven","eight","nine","ten",
+"eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
+var T=["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
+function under100(n){
+  if (n<20) return [U[n]];
+  var t=T[Math.floor(n/10)], r=n%10;
+  return r===0 ? [t] : [t,"-",U[r]];
 }
-function wordCard(w){
-  return '<div class="wcard">'
-    +'<div class="fr">'+esc(w.fr)+'</div>'
-    +'<div class="en" data-en="'+esc(w.en)+'">'+esc(w.en)+'</div>'
-    +'<div class="pro">'+esc(w.pro)+'</div>'
-    +(TTS?'<button class="abtn act-wtts" data-en="'+esc(w.en)+'" style="margin-top:6px;padding:4px 10px;">🔊</button>':'')
-    +'</div>';
+function under1000(n){
+  var parts=[], h=Math.floor(n/100), r=n%100;
+  if (h>0){ parts.push(U[h],"hundred"); if (r>0) parts.push("and"); }
+  if (r>0) parts = parts.concat(under100(r));
+  return parts;
 }
-function infosBlock(){
-  return '<div class="info-card"><h3>🆘 Numéros d\'urgence — Qatar</h3>'
-   +'<div class="telrow"><div>Police / Pompiers / Ambulance (24/7, multilingue)<br><small>112 fonctionne aussi depuis un mobile</small></div><a class="telnum" href="tel:999">999</a></div>'
-   +'<div class="telrow"><div>Hotline médicale Hamad (HMC)</div><a class="telnum" href="tel:16000">16000</a></div>'
-   +'<div class="telrow"><div>Info tourisme</div><a class="telnum" href="tel:106">106</a></div>'
-   +'<div class="telrow"><div>Urgences par SMS (malentendants)</div><a class="telnum" href="sms:992">992</a></div>'
-   +'</div>'
-   +'<div class="info-card"><h3>🇶🇦 À savoir sur place</h3>'
-   +'<p class="tip"><b>Langue :</b> l\'anglais suffit partout (hôtels, taxis, boutiques). L\'arabe est la langue officielle.</p>'
-   +'<p class="tip"><b>Monnaie :</b> le riyal qatari (QAR). Indique « riyal » ou montre le prix sur la calculatrice du téléphone en cas de doute.</p>'
-   +'<p class="tip"><b>Nourriture :</b> cuisine halal partout — pas de porc. L\'alcool est strictement réglementé (hôtels autorisés uniquement, jamais en public).</p>'
-   +'<p class="tip"><b>Tenue :</b> épaules et genoux couverts dans les lieux publics, surtout les malls et les quartiers traditionnels.</p>'
-   +'<p class="tip"><b>Vendredi</b> : journée de prière, de nombreux commerces ouvrent plus tard.</p>'
-   +'<p class="tip"><b>Pourboire :</b> pas obligatoire, on arrondit volontiers (taxis, restaurants).</p>'
-   +'<p class="tip"><b>À goûter :</b> le <b>karak</b> (thé au lait épicé) — « abee wahid karak » 🙂</p>'
-   +'</div>';
+function numToEn(n){
+  n = Math.floor(Math.abs(Number(n)||0));
+  if (n === 0) return "zero";
+  if (n<1000) return under1000(n).join(" ").replace(/ - /g,"-").replace(/  +/g," ");
+  var parts=[];
+  var scales=[[1000000000,"billion"],[1000000,"million"],[1000,"thousand"]];
+  var rest=n, applied=false;
+  for (var i=0;i<scales.length;i++){
+    var v = Math.floor(rest/scales[i][0]);
+    if (v>0){ parts = parts.concat(under1000(v)); parts.push(scales[i][1]); rest = rest % scales[i][0]; applied = true; }
+  }
+  if (rest>0){ if (applied && rest<100) parts.push("and"); parts = parts.concat(under1000(rest)); }
+  return parts.join(" ").replace(/ - /g,"-").replace(/  +/g," ");
 }
-function nombreBlock(){
-  return '<div class="info-card"><h3>🔢 Traducteur de nombres</h3>'
-   +'<div class="numbox"><input id="numin" type="number" inputmode="numeric" placeholder="Tape un nombre (ex : 1492)"></div>'
-   +'<div class="numout" id="numout"></div>'
-   +'</div>';
+function numPro(s){
+  var map = {zero:"ziro",one:"ouane",two:"tou",three:"ssri",four:"fore",five:"faïve",
+  six:"siksse",seven:"seuvène",eight:"èïte",nine:"naïne",ten:"tène",
+  eleven:"ileuvène",twelve:"touelv",thirteen:"seurssine",fifteen:"fiftine",
+  twenty:"touenti",thirty:"seurssi",forty:"forti",fifty:"fifti",
+  sixty:"siksti",seventy:"seuvanti",eighty:"èïti",ninety:"naïnti",
+  hundred:"handrede",thousand:"thaouzande",million:"milïone",billion:"bilïone",
+  and:"annde"};
+  return norm(s).split(/[^a-z]+/).filter(Boolean).map(function(w){
+    return map[w] || w;
+  }).join(" ").replace(/ - /g,"-");
 }
 
-function render(){
-  var q = norm(searchVal).trim();
-  elChips.innerHTML = CATS.map(function(c){
-    return '<button class="chip'+(c[0]===currentCat&&!q?" active":"")+'" data-cat="'+c[0]+'">'+c[1]+'</button>';
-  }).join("") + '<button class="chip'+(currentCat==="fav"&&!q?" active":"")+'" data-cat="fav">⭐ Favoris ('+favs.length+')</button>';
-  var html = "";
+/* traduction mot à mot : renvoie la chaîne traduite (mots inconnus entre *) */
+function glossTrad(raw, dir){
+  var map = dir === "ef" ? MAPS.rev : MAPS.fw;
+  var am = applyMulti(norm(raw), dir);
+  var toks = am.s.split(/[^a-zA-Z0-9]+/).filter(Boolean);
+  var out = [];
+  for (var i=0;i<toks.length;i++){
+    var t = toks[i];
+    var low = t.toLowerCase();
+    if (/^m\d+$/.test(low)){
+      var ph = parseInt(low.slice(1),10);
+      if (ph < am.vals.length && am.vals[ph]){ out.push(am.vals[ph]); }
+      continue;
+    }
+    if (/^\d+$/.test(low)){ out.push(numToEn(parseInt(low,10))); continue; }
+    var tr = lookupWord(low, map);
+    if (tr !== null){ out.push(tr); continue; }
+    if (/^[A-Z]/.test(t) && t.length>1 && t === t.toUpperCase()){ out.push(t); continue; }
+    out.push("*"+low+"*");
+  }
+  return out.join(" ").replace(/\s+/g," ").trim();
+}
 
-  if(q){
-    var ph = PH.filter(function(p){ return norm(p.fr).indexOf(q)>=0 || norm(p.en).indexOf(q)>=0 || norm(p.pro).indexOf(q)>=0; });
-    var wd = WD.filter(function(w){ return norm(w.fr).indexOf(q)>=0 || norm(w.en).indexOf(q)>=0 || norm(w.pro).indexOf(q)>=0; });
-    // nombre tapé ?
-    if(/^\d+$/.test(searchVal.trim())){
-      var n = parseInt(searchVal.trim(),10);
-      if(n<=999999999){
-        var en = numToEn(n);
-        html += '<div class="sect">🔢 Nombre</div>'
-          +'<div class="card"><div class="en">'+en+'</div><div class="pro">'+numPro(en)+'</div>'
-          +(TTS?'<div class="actions"><button class="abtn big act-tts" data-en="'+esc(en)+'">🔊 Écouter</button></div>':'')
-          +'</div>';
-      }
-    }
-    if(ph.length){
-      html += '<div class="sect">💬 Phrases ('+ph.length+')</div>';
-      html += ph.map(function(p){
-        var c = CATS.filter(function(x){return x[0]===p.cat;})[0];
-        return phraseCard(Object.assign({},p,{fr:(c?c[1]+" · ":"")+p.fr}));
-      }).join("");
-    }
-    if(wd.length){
-      html += '<div class="sect">📖 Mots ('+wd.length+')</div><div class="wordgrid">'
-        + wd.map(wordCard).join("") + '</div>';
-    }
-    if(!ph.length && !wd.length && !/^\d+$/.test(searchVal.trim())){
-      html += '<div class="empty">Rien trouvé pour « '+esc(searchVal)+' ».<br>Essaie un autre mot (français ou anglais) ou un nombre.</div>';
-    }
-  } else if(currentCat==="fav"){
-    var fp = PH.filter(function(p){ return isFav(p.id); });
-    var fw = WD.filter(function(w){ return isFav(w.id); });
-    if(!fp.length && !fw.length){ html += '<div class="empty">Pas encore de favoris.<br>Touche ⭐ sur une phrase pour la garder sous la main.</div>'; }
-    if(fp.length){ html += '<div class="sect">💬 Phrases</div>' + fp.map(phraseCard).join(""); }
-    if(fw.length){ html += '<div class="sect">📖 Mots</div><div class="wordgrid">'+fw.map(wordCard).join("")+'</div>'; }
-  } else {
-    var label = CATS.filter(function(c){return c[0]===currentCat;})[0][1];
-    html += '<div class="cat-title">'+label+'</div>';
-    if(currentCat==="infos"){ html += infosBlock(); }
-    else if(currentCat==="nombres"){
-      html += nombreBlock();
-      PH.filter(function(p){return p.cat==="nombres";}).forEach(function(p){ html += phraseCard(p); });
-      html += '<div class="sect">Chiffres utiles</div><div class="wordgrid">'
-        + [1,2,3,4,5,6,7,8,9,10,20,50,100,1000].map(function(n){
-            var en=numToEn(n); return '<div class="wcard"><div class="fr">'+n+'</div><div class="en">'+en+'</div><div class="pro">'+numPro(en)+'</div></div>';
-          }).join("") + '</div>';
-    }
-    else {
-      PH.filter(function(p){return p.cat===currentCat;}).forEach(function(p){ html += phraseCard(p); });
+/* phrases les plus proches (recherche floue) */
+var STOPF = {le:1,la:1,les:1,l:1,un:1,une:1,des:1,du:1,de:1,d:1,a:1,au:1,aux:1,
+  et:1,je:1,tu:1,il:1,elle:1,on:1,nous:1,vous:1,ils:1,elles:1,
+  mon:1,ma:1,mes:1,ton:1,ta:1,tes:1,son:1,sa:1,ses:1,ce:1,cet:1,cette:1,ces:1,
+  est:1,suis:1,es:1,pour:1,avec:1,dans:1,sur:1};
+var STOPE = {a:1,an:1,the:1,is:1,are:1,am:1,do:1,does:1,i:1,you:1,my:1,your:1,
+  this:1,that:1,to:1,of:1,and:1,in:1,on:1,at:1,it:1,we:1,me:1,for:1};
+
+function fuzzyTrad(raw, dir){
+  var qtok = tokens(raw);
+  var stop = dir === "ef" ? STOPE : STOPF;
+  var qf = qtok.filter(function(t){ return !stop[t] && t.length>1; });
+  if (!qf.length) qf = qtok;
+  var res = [];
+  for (var i=0;i<P.length;i++){
+    var parts = P[i].split("|");
+    var side = dir === "ef" ? parts[2] : parts[1];
+    var ptok = tokens(side);
+    var matched = 0;
+    for (var j=0;j<qf.length;j++){ if (ptok.indexOf(qf[j])>=0) matched++; }
+    if (matched === 0) continue;
+    var score = matched / qf.length;
+    if (score < 0.34) continue;
+    res.push({ p: parseP(P[i], i), score: score, matched: matched });
+  }
+  res.sort(function(a,b){ return b.score - a.score || b.matched - a.matched; });
+  return res.slice(0,3);
+}
+
+/* construction du résultat du traducteur (HTML pur, sans DOM) */
+function catLabel(id){
+  for (var i=0;i<CATS.length;i++){ if (CATS[i][0]===id) return CATS[i][1]; }
+  return id;
+}
+function tradResultHtml(raw, dir){
+  var matches = fuzzyTrad(raw, dir);
+  var gloss = glossTrad(raw, dir);
+  var known = gloss && gloss.indexOf("*") === -1;
+  var h = "";
+  if (matches.length){
+    h += '<div class="cat-title">✅ Phrases types par situation</div>';
+    for (var i=0;i<matches.length;i++){
+      h += phraseCard(matches[i].p, catLabel(matches[i].p.cat), true);
     }
   }
-  elList.innerHTML = html;
-  var numin = document.getElementById("numin");
-  if(numin){
-    numin.addEventListener("input", function(){
-      var out = document.getElementById("numout");
-      var v = parseInt(this.value,10);
-      if(!this.value){ out.innerHTML=""; return; }
-      if(isNaN(v)||v<0||v>999999999){ out.innerHTML="Entre 0 et 999 999 999."; return; }
-      var en = numToEn(v);
-      out.innerHTML = '<b>'+en+'</b><div class="pro">'+numPro(en)+'</div>'
-        +(TTS?'<div class="actions"><button class="abtn big act-tts" data-en="'+esc(en)+'">🔊 Écouter</button></div>':'');
+  if (gloss && (known || matches.length)){
+    h += '<div class="cat-title">📝 Mot à mot (littéral)</div>'
+      + '<div class="card"><div class="en">' + esc(gloss) + '</div>'
+      + (TTS ? '<div class="actions"><button class="abtn ttsb" data-txt="'+esc(gloss)+'" data-lang="'+(dir==="fe"?"en-US":"fr-FR")+'">🔊 Écouter</button></div>' : '')
+      + '<p class="tip">Traduction littérale mot à mot, 100 % hors ligne — l\'ordre des mots peut être approximatif. Montre la phrase 🇬🇧 à ton interlocuteur en cas de doute.</p></div>';
+  }
+  if (!h){
+    h = '<div class="card"><p>🤔 Aucune correspondance dans le kit.<br>Essaie avec des mots plus simples, ou pioche dans les catégories de phrases — elles marchent toutes hors ligne.</p></div>';
+  }
+  return h;
+}
+
+/* ---------------- état traducteur ---------------- */
+var trDir = "fe", trVal = "", trOutHtml = "";
+var hist = [];
+try{ hist = JSON.parse(store("qatar-trad") || "[]") || []; }catch(e){ hist = []; }
+function saveHist(a){ store("qatar-trad", JSON.stringify(a.slice(0,8))); }
+
+function histHtml(){
+  if (!hist.length) return "";
+  var h = '<div class="sect">🕘 Récentes</div><div>';
+  for (var i=0;i<hist.length;i++){
+    h += '<button class="abtn tr-h" data-i="'+i+'">'+esc(hist[i].q)+'</button>';
+  }
+  return h + '</div>';
+}
+function translatorBlock(){
+  return '<div class="info-card">'
+    + '<h3>🈯 Traducteur 100 % hors ligne</h3>'
+    + '<div class="dirbox">'
+      + '<button class="abtn dir'+(trDir==="fe"?" active":"")+'" data-dir="fe">🇫🇷 FR → 🇬🇧 EN</button>'
+      + '<button class="abtn dir'+(trDir==="ef"?" active":"")+'" data-dir="ef">🇬🇧 EN → 🇫🇷 FR</button>'
+    + '</div>'
+    + '<div class="numbox"><input id="trIn" type="text" placeholder="Ex : où sont les toilettes ?" autocomplete="off" autocapitalize="off" autocorrect="off"></div>'
+    + '<button id="trGo" class="abtn big" style="margin-top:10px;">Traduire (hors ligne)</button>'
+    + '<div class="trout" id="trOut">'+trOutHtml+'</div>'
+    + histHtml()
+    + '<p class="tip"><b>Astuce :</b> tape ta phrase entière — je trouve les phrases types les plus proches <b>et</b> je te donne aussi le mot à mot. Tout fonctionne sans réseau.</p>'
+    + '</div>';
+}
+function doTrad(){
+  var el = document.getElementById("trIn");
+  var raw = ((el && el.value) || trVal || "").trim();
+  trVal = raw;
+  if (!raw){
+    trOutHtml = '<div class="card"><p>Tape une phrase d\'abord 🙂</p></div>';
+    render(); return;
+  }
+  trOutHtml = tradResultHtml(raw, trDir);
+  hist.unshift({ q: raw, dir: trDir });
+  for (var i=1;i<hist.length;i++){
+    if (hist[i].q === raw && hist[i].dir === trDir){ hist.splice(i,1); i--; }
+  }
+  hist = hist.slice(0,8);
+  saveHist(hist);
+  render();
+}
+function attachTrad(){
+  var i = document.getElementById("trIn");
+  if (!i) return;
+  i.value = trVal;
+  i.addEventListener("input", function(){ trVal = this.value; });
+  i.addEventListener("keydown", function(e){ if (e.key === "Enter"){ e.preventDefault(); doTrad(); } });
+  var go = document.getElementById("trGo");
+  if (go) go.addEventListener("click", doTrad);
+  var dirs = document.querySelectorAll(".dir");
+  for (var k=0;k<dirs.length;k++){
+    dirs[k].addEventListener("click", function(){
+      trDir = this.getAttribute("data-dir");
+      trOutHtml = "";
+      render();
+    });
+  }
+  var hs = document.querySelectorAll(".tr-h");
+  for (var m=0;m<hs.length;m++){
+    hs[m].addEventListener("click", function(){
+      var hh = hist[parseInt(this.getAttribute("data-i"),10)];
+      if (!hh) return;
+      trDir = hh.dir; trVal = hh.q;
+      trOutHtml = tradResultHtml(hh.q, hh.dir);
+      render();
     });
   }
 }
 
-/* ---------- Événements ---------- */
-elQ.addEventListener("input", function(){
-  searchVal = this.value;
-  elClear.style.display = this.value ? "block" : "none";
-  render();
-});
-elClear.addEventListener("click", function(){
-  elQ.value=""; searchVal=""; elClear.style.display="none"; elQ.focus(); render();
-});
+/* ---------------- rendu des phrases ---------------- */
+function parseP(row, idx){
+  var f = row.split("|");
+  return { id: "p"+idx, cat: f[0], fr: f[1], en: f[2], pro: f[3]||"", note: f[4]||"" };
+}
+function parseW(row, idx){
+  var f = row.split("|");
+  return { id: f[0] || ("w"+idx), cat: f[4] || "base", fr: f[1], en: f[2], pro: f[3] || "" };
+}
+function wordCard(w){
+  return '<div class="card"><div class="lbl">'+catLabel(w.cat)+' · mot</div>'
+    + '<div class="fr">'+esc(w.fr)+'</div><div class="en">'+esc(w.en)+'</div>'
+    + '<div class="pro">'+esc(w.pro)+'</div>'
+    + (TTS?'<div class="actions"><button class="abtn ttsb" data-txt="'+esc(w.en)+'" data-lang="en-US">🔊</button></div>':'')
+    + '</div>';
+}
+function phraseCard(p, label, withCat){
+  var fav = favs.indexOf(p.id) >= 0;
+  return '<div class="card" id="'+p.id+'">'
+    + '<div class="lbl">'+esc(label)+(withCat?'':'')+'</div>'
+    + '<div class="fr">'+esc(p.fr)+'</div>'
+    + '<div class="en">'+esc(p.en)+'</div>'
+    + '<div class="pro">'+esc(p.pro)+'</div>'
+    + (p.note?'<div class="note">'+esc(p.note)+'</div>':'')
+    + '<div class="actions">'
+    + (TTS?'<button class="abtn ttsb" data-txt="'+esc(p.en)+'" data-lang="en-US">🔊 Écouter</button>':'')
+    + '<button class="abtn favb'+(fav?' on':'')+'" data-id="'+p.id+'">'+(fav?"★":"☆")+'</button>'
+    + '</div></div>';
+}
+
+var PH = P.map(parseP);
+var WD = W.map(parseW);
+
+/* ---------------- infos ---------------- */
+function infoBlock(){
+  return '<div class="info-card">'
+    + '<h3>ℹ️ À savoir avant de partir</h3>'
+    + '<p><b>Langue</b> : l\'anglais est parlé partout à Doha (hôtels, aéroport, taxis, malls). L\'arabe est la langue officielle. Quelques mots arabes font toujours plaisir — voir la catégorie 🕌.</p>'
+    + '<p><b>Argent</b> : le riyal qatarien (QAR). 1 QAR ≈ 2,50 €... à vérifier avant le départ. Les cartes sont acceptées presque partout ; un peu de cash utile pour petits taxis et souk.</p>'
+    + '<p><b>Culture</b> : tenue sobre recommandée (épaules/genoux couverts en ville). Pendant le Ramadan, ne pas manger ni boire en public le jour. Alcool strictement encadré — zéro dans les bagages.</p>'
+    + '<p><b>Déplacements</b> : Uber/Careem très faciles à Doha. La voiture est reine ; on conduit à droite (volant à gauche). Métro de Doha moderne et climatisé.</p>'
+    + '<p><b>Chaleur</b> : eau en bouteille toujours, crème solaire, chapeau. Les bâtiments sont sur-climatisés : prévoir une surcouche légère.</p>'
+    + '<p><b>Urgences</b> : police 999, ambulance 999. Mentionne « firefighter » pour être orienté vers les secours.</p>'
+    + '<p><b>Électricité</b> : prises type G (britannique, 3 broches rectangulaires) — adaptateur indispensable.</p>'
+    + '<p><b>Sim / réseau</b> : Ooredoo et Vodafone vendent des SIM touristiques à l\'aéroport ; eSIM dispo. Wifi gratuit quasi partout.</p>'
+    + '</div>';
+}
+
+/* ---------------- recherche & rendu principal ---------------- */
+function search(){
+  var nq = norm(q);
+  if (!nq) return null;
+  var out = { ph: [], w: [] };
+  for (var i=0;i<PH.length;i++){
+    var p = PH[i];
+    if (norm(p.fr).indexOf(nq)>=0 || norm(p.en).indexOf(nq)>=0 || norm(p.pro).indexOf(nq)>=0){
+      out.ph.push(p);
+    }
+  }
+  for (var j=0;j<WD.length;j++){
+    var w = WD[j];
+    if (norm(w.fr).indexOf(nq)>=0 || norm(w.en).indexOf(nq)>=0){
+      out.w.push(w);
+    }
+  }
+  return out;
+}
+var elChips = document.getElementById("chips");
+var elList  = document.getElementById("list");
+function render(){
+  var i, h = "";
+  h += '<div class="numbox" style="margin:0 0 12px;">'
+    + '<input id="q" type="search" placeholder="🔎 Chercher une phrase…" value="'+esc(q)+'" autocomplete="off">'
+    + (q?'<button id="clearq" class="abtn" style="border:0;background:none;color:#8a6d3b;font-weight:800;">✕</button>':'')
+    + '</div>';
+  var catKeys = {};
+  for (i=0;i<CATS.length;i++) catKeys[CATS[i][0]] = true;
+  var chipHtml = "";
+  for (i=0;i<CATS.length;i++){
+    chipHtml += '<button class="chip'+(currentCat===CATS[i][0]&&!q?" on":"")+'" data-cat="'+CATS[i][0]+'">'+CATS[i][1]+'</button>';
+  }
+  if (favs.length){ chipHtml += '<button class="chip'+(currentCat==="fav"&&!q?" on":"")+'" data-cat="fav">⭐ Favorites</button>'; }
+  elChips.innerHTML = chipHtml;
+  if (q){
+    var s = search();
+    h += '<div class="cat-title">🔎 Résultats pour « '+esc(q)+' »</div>';
+    if (!s || (!s.ph.length && !s.w.length)){
+      h += '<div class="card"><p>Aucun résultat. Essaie la catégorie 🈯 Traducteur pour le mot à mot.</p></div>';
+    } else {
+      for (i=0;i<s.ph.length;i++){ h += phraseCard(s.ph[i], catLabel(s.ph[i].cat)); }
+      for (i=0;i<s.w.length;i++){ h += wordCard(s.w[i]); }
+    }
+  } else if (currentCat === "trad"){
+    h += translatorBlock();
+  } else if (currentCat === "fav"){
+    h += '<div class="cat-title">⭐ Mes phrases favorites</div>';
+    var shown = 0;
+    for (i=0;i<PH.length;i++){
+      if (favs.indexOf(PH[i].id)>=0){ h += phraseCard(PH[i], catLabel(PH[i].cat)); shown++; }
+    }
+    if (!shown) h += '<div class="card"><p>Aucune favorite pour l\'instant — appuie sur ☆ pour épingler une phrase.</p></div>';
+  } else if (currentCat === "infos"){
+    h += infoBlock();
+  } else {
+    var label = catLabel(currentCat);
+    h += '<div class="cat-title">'+label+'</div>';
+    for (i=0;i<PH.length;i++){
+      if (PH[i].cat === currentCat){ h += phraseCard(PH[i], label); }
+    }
+    for (i=0;i<WD.length;i++){
+      if (WD[i].cat === currentCat){ h += wordCard(WD[i]); }
+    }
+  }
+  elList.innerHTML = h;
+  var elQ = document.getElementById("q");
+  if (elQ){
+    elQ.addEventListener("input", function(){ q = this.value; render(); });
+  }
+  var elClear = document.getElementById("clearq");
+  if (elClear){ elClear.addEventListener("click", function(){ q = ""; render(); }); }
+  attachTrad();
+}
 elChips.addEventListener("click", function(e){
-  var b = e.target.closest(".chip");
-  if(!b) return;
-  currentCat = b.getAttribute("data-cat");
-  searchVal=""; elQ.value=""; elClear.style.display="none";
+  var c = e.target.closest(".chip");
+  if (!c) return;
+  currentCat = c.getAttribute("data-cat");
+  q = "";
   render();
-  elChips.scrollTo({left:b.offsetLeft-16, behavior:"smooth"});
 });
 elList.addEventListener("click", function(e){
-  var favBtn = e.target.closest(".act-fav");
-  var ttsBtn = e.target.closest(".act-tts");
-  var wttsBtn = e.target.closest(".act-wtts");
-  var wordTts = ttsBtn ? null : e.target.closest(".wcard .en");
-  if(ttsBtn){ speak(ttsBtn.getAttribute("data-en"),"en-US"); }
-  else if(wttsBtn){ speak(wttsBtn.getAttribute("data-en"),"en-US"); }
-  else if(wordTts && TTS){ speak(wordTts.getAttribute("data-en"),"en-US"); }
-  var card = e.target.closest(".card, .wcard");
-  if(favBtn && card){
-    var id = card.getAttribute("data-id");
-    if(id) toggleFav(id);
+  var s = e.target.closest(".ttsb");
+  if (s){ speak(s.getAttribute("data-txt"), s.getAttribute("data-lang")); return; }
+  var f = e.target.closest(".favb");
+  if (f){
+    var id = f.getAttribute("data-id");
+    var pos = favs.indexOf(id);
+    if (pos >= 0){ favs.splice(pos,1); } else { favs.push(id); }
+    saveFavs(favs); render();
   }
 });
 render();
 </script>
 <script>
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function () { navigator.serviceWorker.register("./sw.js"); });
+  window.addEventListener("load", function() {
+    navigator.serviceWorker.register("./sw.js");
+  });
 }
 </script>
 </body>
