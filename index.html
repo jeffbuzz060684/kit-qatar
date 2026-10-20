@@ -58,6 +58,9 @@ h1{font-size:1.35rem; color:var(--maroon-dark); letter-spacing:.3px;}
 .dirbox .abtn{flex:1; font-size:.85rem;}
 .abtn.dir.active{background:var(--maroon); color:#fff; border-color:var(--maroon);}
 .trout{margin-top:12px;}
+.sosout{margin-top:12px; background:#fffdf7; border:2px solid var(--maroon); border-radius:14px; padding:16px; text-align:center;}
+.sos-big{font-size:1.6rem; font-weight:800; color:#162d40; line-height:1.3;}
+.sos-pro{font-size:1rem; color:#6b5d48; font-style:italic; margin-top:6px;}
 .trout .en{font-size:1.25rem; font-weight:700;}
 .tr-h{margin:4px 6px 0 0; font-size:.75rem; font-weight:600;}
 .sugb{margin:4px 6px 0 0; font-size:.75rem; font-weight:700; border-color:#8a5a00; color:#8a5a00;}
@@ -96,24 +99,26 @@ footer{
 <div class="wrap">
   <header>
     <h1>Kit de survie Qatar 🇶🇦</h1>
-    <span class="offline">v4 · hors ligne</span>
+    <span class="offline">v5 · hors ligne</span>
   </header>
   <p class="tagline">FR ↔ EN · traducteur hors ligne pro + mode apprentissage — fonctionne sans réseau</p>
   <nav id="chips" aria-label="Catégories"></nav>
   <main id="list"></main>
   <footer>
     Traducteur embarqué : ~600 mots + ~110 expressions, détection de langue, correction intuitive.<br>
-    Nouveau v4 : quiz express, flashcards, réflexes SOS et mise à jour automatique fiable.<br>
+    Nouveau v5 : son renforcé (voix EN/FR, retry auto), SOS affiche la phrase en grand, diagnostic voix dans Infos.<br>
     100 % hors ligne : aucune connexion requise. Synthèse vocale via l'appareil.
   </footer>
 </div>
 <script>
 "use strict";
 /* ================================================================
-   Kit de survie Qatar v3 — 100 % hors ligne
+   Kit de survie Qatar v5 — 100 % hors ligne
    - Traducteur : phrases proches + mot à mot + détection de langue
    - Correction intuitive des mots inconnus, vocabulaire cliquable
    - Traduction en direct pendant la frappe
+   - v4 : quiz, flashcards, SOS, mini-leçons
+   - v5 : son renforcé (voix EN/FR + retry auto), SOS affiché en grand, diagnostic voix
    ================================================================ */
 
 var CATS = [
@@ -519,14 +524,68 @@ function tokens(s){ return norm(s).split(/[^a-z0-9]+/).filter(function(t){ retur
 var TTS = (function(){
   try{ return !!window.speechSynthesis; }catch(e){ return false; }
 })();
+function pickVoice(lang){
+  try{
+    var vs = window.speechSynthesis.getVoices() || [];
+    var pref = String(lang || "en-US").slice(0, 2).toLowerCase();
+    var best = null, fb = null;
+    for (var i = 0; i < vs.length; i++){
+      var vl = String(vs[i].lang || "").replace("_", "-").toLowerCase();
+      if (vl.indexOf(pref) === 0){
+        if (!fb) fb = vs[i];
+        if (vs[i].localService && !best) best = vs[i];
+      }
+    }
+    return best || fb;
+  }catch(e){ return null; }
+}
+var VEN = null, VFR = null;
+function refreshVoices(){
+  if (!TTS) return;
+  VEN = pickVoice("en-US");
+  VFR = pickVoice("fr-FR");
+  ttsDiag();
+}
+function ttsDiag(){
+  var el = document.getElementById("ttsDiag");
+  if (!el) return;
+  if (!TTS){
+    el.innerHTML = "❌ Synthèse vocale indisponible sur cet appareil.";
+    return;
+  }
+  var n = 0;
+  try{ n = (window.speechSynthesis.getVoices() || []).length; }catch(e){}
+  var ve = VEN ? VEN.name : "aucune";
+  el.innerHTML = "Voix détectées : " + n + " · voix anglaise : " + esc(ve) +
+    (VEN ? " ✅" : " ⚠️ — vérifie la synthèse vocale Google (Réglages → Langue et saisie → Synthèse vocale → Google) et monte le volume média.");
+}
+if (TTS){
+  try{ window.speechSynthesis.onvoiceschanged = refreshVoices; }catch(e){}
+  refreshVoices();
+}
 function speak(txt, lang){
   if (!TTS || !txt) return;
-  try{
-    window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(txt);
-    u.lang = lang || "en-US"; u.rate = 0.9;
-    window.speechSynthesis.speak(u);
-  }catch(e){}
+  var done = false;
+  var attempt = function(n){
+    try{
+      var ss = window.speechSynthesis;
+      ss.cancel();
+      var u = new SpeechSynthesisUtterance(txt);
+      u.lang = lang || "en-US"; u.rate = 0.85; u.volume = 1; u.pitch = 1;
+      var v = (String(u.lang).slice(0, 2) === "fr") ? VFR : VEN;
+      if (v){ try{ u.voice = v; }catch(e2){} }
+      u.onstart = function(){ done = true; };
+      u.onend = function(){ done = true; };
+      u.onerror = function(){ if (n < 2) attempt(n + 1); };
+      try{ ss.resume(); }catch(e2){}
+      ss.speak(u);
+      try{ ss.resume(); }catch(e2){}
+    }catch(e){}
+  };
+  attempt(0);
+  setTimeout(function(){
+    if (!done) attempt(1);
+  }, 800);
 }
 
 /* ---------------- stockage local ---------------- */
@@ -1510,6 +1569,12 @@ function infoBlock(){
   h += '<p>☀️ Chaleur extrême d\'avril à octobre : hydratation et casquette indispensables.</p>';
   h += '<p class="tip">🇫🇷 Ambassade de France à Doha : West Bay, Doha. En cas de souci de passeport, c\'est le premier réflexe.</p>';
   h += '</div>';
+  h += '<div class="card" style="margin-top:10px;">';
+  h += '<div class="lbl">🔊 Son &amp; voix</div>';
+  h += '<p id="ttsDiag">Diagnostic…</p>';
+  h += '<div class="actions"><button class="abtn ttsb" data-txt="Sound test. The voice works." data-lang="en-US">🔊 Tester le son</button></div>';
+  h += '<p class="tip">Pas de son ? 1) Monte le volume MÉDIA du téléphone. 2) Vérifie la synthèse vocale : Réglages → Langue et saisie → Synthèse vocale → Google. 3) Si aucune voix anglaise n\'apparaît ci-dessus, installe la voix anglaise dans les réglages de la synthèse vocale Google.</p>';
+  h += '</div>';
   return h;
 }
 
@@ -1517,22 +1582,33 @@ function infoBlock(){
    MODE APPRENTISSAGE v4 — SOS, quiz, flashcards, mini-leçons
    ================================================================ */
 
-/* réflexes SOS : un tap = la phrase sort en anglais à voix haute */
+/* réflexes SOS : un tap = la phrase sort en anglais à voix haute ET s'affiche en grand */
 var SOS = [
-  ["Help!", "🆘 Au secours"],
-  ["Call an ambulance!", "🚑 Ambulance"],
-  ["Call the police!", "🚓 Police"],
-  ["I need a doctor", "👨‍⚕️ Médecin"],
-  ["Where are the toilets?", "🚻 Toilettes"],
-  ["How much is it?", "💶 Combien ?"]
+  ["Help!", "🆘 Au secours", "hèlp"],
+  ["Call an ambulance!", "🚑 Ambulance", "kol ène ambioleunce"],
+  ["Call the police!", "🚓 Police", "kol ze police"],
+  ["I need a doctor", "👨‍⚕️ Médecin", "aï nide e docteur"],
+  ["Where are the toilets?", "🚻 Toilettes", "ouère ar ze toyalette"],
+  ["How much is it?", "💶 Combien ?", "haoue matche iz ite"]
 ];
 function sosRow(){
-  var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça parle</div>';
-  h += '<p class="tip">En galère ? Tapez un gros bouton : l\'app dit la phrase à votre place.</p>';
+  var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça parle (et ça s\'affiche)</div>';
+  h += '<p class="tip">En galère ? Tapez un gros bouton : l\'app dit la phrase à votre place et l\'écrit en grand — vous pouvez aussi montrer l\'écran.</p>';
   for (var i = 0; i < SOS.length; i++){
-    h += '<button class="abtn ttsb" data-txt="' + esc(SOS[i][0]) + '" data-lang="en-US" style="margin:4px 6px 0 0;font-size:.95rem;padding:10px 16px;">' + esc(SOS[i][1]) + '</button>';
+    h += '<button class="abtn sosb" data-txt="' + esc(SOS[i][0]) + '" data-pro="' + esc(SOS[i][2]) + '" style="margin:4px 6px 0 0;font-size:.95rem;padding:10px 16px;">' + esc(SOS[i][1]) + '</button>';
   }
+  h += '<div id="sosOut" class="sosout" style="display:none;"></div>';
   return h;
+}
+function sosShow(el){
+  var st = el.getAttribute("data-txt") || "";
+  var sp = el.getAttribute("data-pro") || "";
+  speak(st, "en-US");
+  var so = document.getElementById("sosOut");
+  if (so){
+    so.style.display = "block";
+    so.innerHTML = '<div class="sos-big">' + esc(st) + '</div><div class="sos-pro">' + esc(sp) + '</div>';
+  }
 }
 
 /* ---------------- quiz express ---------------- */
@@ -1753,6 +1829,7 @@ function render(){
   if (list) list.innerHTML = listHtml();
   attachTrad();
   attachNum();
+  ttsDiag();
 }
 
 /* ---------------- écouteurs globaux (délégation) ---------------- */
@@ -1777,6 +1854,10 @@ function render(){
       var el = e.target;
       while (el && el !== list){
         if (el.classList){
+          if (el.classList.contains("sosb")){
+            sosShow(el);
+            return;
+          }
           if (el.classList.contains("ttsb")){
             speak(el.getAttribute("data-txt") || "", el.getAttribute("data-lang") || "en-US");
             return;
@@ -1846,3 +1927,4 @@ if ("serviceWorker" in navigator){
 </script>
 </body>
 </html>
+
