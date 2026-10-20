@@ -1,5 +1,5 @@
-/* Kit de survie Qatar v5 — service worker 100 % hors ligne */
-var CACHE = "kit-qatar-v5";
+/* Kit de survie Qatar v6 — service worker 100 % hors ligne */
+var CACHE = "kit-qatar-v6";
 var ASSETS = ["./", "./index.html"];
 
 self.addEventListener("install", function(e){

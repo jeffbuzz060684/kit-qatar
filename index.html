@@ -77,7 +77,7 @@ h1{font-size:1.35rem; color:var(--maroon-dark); letter-spacing:.3px;}
 }
 .abtn.big{font-size:1rem; padding:10px 22px;}
 .abtn.on{background:var(--maroon); color:#fff;}
-.abtn.ttsb{font-size:.8rem; padding:6px 12px;}
+.vocab-chip{display:inline-block;}
 .cat-title{margin:4px 0 2px;}
 .card{
   background:var(--card); border:1.5px solid var(--line); border-radius:14px;
@@ -99,31 +99,31 @@ footer{
 <div class="wrap">
   <header>
     <h1>Kit de survie Qatar 🇶🇦</h1>
-    <span class="offline">v5 · hors ligne</span>
+    <span class="offline">v6 · hors ligne</span>
   </header>
-  <p class="tagline">FR ↔ EN · traducteur hors ligne pro + mode apprentissage — fonctionne sans réseau</p>
+  <p class="tagline">FR ↔ EN · traducteur pro + IATA fret &amp; douane + apprentissage — 100 % hors ligne</p>
   <nav id="chips" aria-label="Catégories"></nav>
   <main id="list"></main>
   <footer>
     Traducteur embarqué : ~600 mots + ~110 expressions, détection de langue, correction intuitive.<br>
-    Nouveau v5 : son renforcé (voix EN/FR, retry auto), SOS affiche la phrase en grand, diagnostic voix dans Infos.<br>
-    100 % hors ligne : aucune connexion requise. Synthèse vocale via l'appareil.
+    Nouveau v6 : section 🛫 IATA &amp; fret (douane, colisage, marchandises dangereuses, TPH 700/batteries) — audio retiré, app 100 % silencieuse.<br>
+    100 % hors ligne : aucune connexion requise.
   </footer>
 </div>
 <script>
 "use strict";
 /* ================================================================
-   Kit de survie Qatar v5 — 100 % hors ligne
+   Kit de survie Qatar v6 — 100 % hors ligne, 100 % silencieuse (audio retiré en v6)
    - Traducteur : phrases proches + mot à mot + détection de langue
-   - Correction intuitive des mots inconnus, vocabulaire cliquable
-   - Traduction en direct pendant la frappe
+   - Correction intuitive des mots inconnus, suggestions
    - v4 : quiz, flashcards, SOS, mini-leçons
-   - v5 : son renforcé (voix EN/FR + retry auto), SOS affiché en grand, diagnostic voix
+   - v6 : section IATA & fret — l'anglais de la douane et du colisage
    ================================================================ */
 
 var CATS = [
   ["trad", "🈯 Traducteur"],
   ["apprendre", "🎓 Apprendre"],
+  ["iata", "🛫 IATA & fret"],
   ["base", "👋 Essentiels"],
   ["debg", "🙋 Se débrouiller"],
   ["aero", "✈️ Aéroport & avion"],
@@ -520,73 +520,7 @@ function esc(s){
 }
 function tokens(s){ return norm(s).split(/[^a-z0-9]+/).filter(function(t){ return t.length>0; }); }
 
-/* ---------------- TTS (synthèse vocale de l'appareil, hors ligne) ---------------- */
-var TTS = (function(){
-  try{ return !!window.speechSynthesis; }catch(e){ return false; }
-})();
-function pickVoice(lang){
-  try{
-    var vs = window.speechSynthesis.getVoices() || [];
-    var pref = String(lang || "en-US").slice(0, 2).toLowerCase();
-    var best = null, fb = null;
-    for (var i = 0; i < vs.length; i++){
-      var vl = String(vs[i].lang || "").replace("_", "-").toLowerCase();
-      if (vl.indexOf(pref) === 0){
-        if (!fb) fb = vs[i];
-        if (vs[i].localService && !best) best = vs[i];
-      }
-    }
-    return best || fb;
-  }catch(e){ return null; }
-}
-var VEN = null, VFR = null;
-function refreshVoices(){
-  if (!TTS) return;
-  VEN = pickVoice("en-US");
-  VFR = pickVoice("fr-FR");
-  ttsDiag();
-}
-function ttsDiag(){
-  var el = document.getElementById("ttsDiag");
-  if (!el) return;
-  if (!TTS){
-    el.innerHTML = "❌ Synthèse vocale indisponible sur cet appareil.";
-    return;
-  }
-  var n = 0;
-  try{ n = (window.speechSynthesis.getVoices() || []).length; }catch(e){}
-  var ve = VEN ? VEN.name : "aucune";
-  el.innerHTML = "Voix détectées : " + n + " · voix anglaise : " + esc(ve) +
-    (VEN ? " ✅" : " ⚠️ — vérifie la synthèse vocale Google (Réglages → Langue et saisie → Synthèse vocale → Google) et monte le volume média.");
-}
-if (TTS){
-  try{ window.speechSynthesis.onvoiceschanged = refreshVoices; }catch(e){}
-  refreshVoices();
-}
-function speak(txt, lang){
-  if (!TTS || !txt) return;
-  var done = false;
-  var attempt = function(n){
-    try{
-      var ss = window.speechSynthesis;
-      ss.cancel();
-      var u = new SpeechSynthesisUtterance(txt);
-      u.lang = lang || "en-US"; u.rate = 0.85; u.volume = 1; u.pitch = 1;
-      var v = (String(u.lang).slice(0, 2) === "fr") ? VFR : VEN;
-      if (v){ try{ u.voice = v; }catch(e2){} }
-      u.onstart = function(){ done = true; };
-      u.onend = function(){ done = true; };
-      u.onerror = function(){ if (n < 2) attempt(n + 1); };
-      try{ ss.resume(); }catch(e2){}
-      ss.speak(u);
-      try{ ss.resume(); }catch(e2){}
-    }catch(e){}
-  };
-  attempt(0);
-  setTimeout(function(){
-    if (!done) attempt(1);
-  }, 800);
-}
+/* v6 : audio supprimé à la demande de Jade — l'app est 100 % visuelle et silencieuse */
 
 /* ---------------- stockage local ---------------- */
 var memStore = {};
@@ -1310,7 +1244,6 @@ function phraseCard(p, opts){
   if (p.pro) h += '<div class="pro">' + esc(p.pro) + '</div>';
   if (p.note) h += '<div class="note">ℹ️ ' + esc(p.note) + '</div>';
   h += '<div class="actions">';
-  h += '<button class="abtn ttsb" data-txt="' + esc(p.en) + '" data-lang="en-US">🔊 Écouter</button>';
   h += '<button class="abtn favb' + (isFav(key) ? " on" : "") + '" data-fav="' + esc(key) + '">' + (isFav(key) ? "★ Retenu" : "☆ Retenir") + '</button>';
   h += '</div></div>';
   return h;
@@ -1321,9 +1254,7 @@ function wordCard(w){
   h += '<div class="fr">' + esc(w.fr) + '</div>';
   h += '<div class="en">' + esc(w.en) + '</div>';
   if (w.pro) h += '<div class="pro">' + esc(w.pro) + '</div>';
-  h += '<div class="actions">';
-  h += '<button class="abtn ttsb" data-txt="' + esc(w.en) + '" data-lang="en-US">🔊 Écouter</button>';
-  h += '</div></div>';
+  h += '</div>';
   return h;
 }
 
@@ -1348,7 +1279,6 @@ function tradResultHtml(raw, dir){
     h += '<div class="sect">📺 Mot à mot</div>';
     h += '<div class="card">';
     h += '<div class="en">' + esc(g.text) + '</div>';
-    h += '<div class="actions"><button class="abtn ttsb" data-txt="' + esc(g.text) + '" data-lang="' + (eff === "fe" ? "en-US" : "fr-FR") + '">🔊 Écouter</button></div>';
     h += '</div>';
   }
   if (g.unknowns.length){
@@ -1371,7 +1301,7 @@ function tradResultHtml(raw, dir){
   if (chips.length){
     h += '<div class="sect">📚 Vocabulaire</div>';
     for (var c = 0; c < chips.length; c++){
-      h += '<button class="abtn vocab-chip ttsb" data-txt="' + esc(chips[c][1]) + '" data-lang="' + (eff === "fe" ? "en-US" : "fr-FR") + '">' + esc(chips[c][0]) + ' = ' + esc(chips[c][1]) + '</button>';
+      h += '<span class="vocab-chip">' + esc(chips[c][0]) + ' = ' + esc(chips[c][1]) + '</span>';
     }
   }
   return h;
@@ -1405,7 +1335,7 @@ function translatorBlock(){
   h += '<div class="actions"><button id="trGo" class="abtn big">Traduire</button></div>';
   h += '<div id="trOut">' + trOutHtml + '</div>';
   h += '<div id="trHistWrap">' + histHtml() + '</div>';
-  h += '<p class="tip">💡 100 % hors ligne. Cliquez une suggestion 💡 pour corriger un mot, une pastille 📚 pour écouter, une bulle 🕘 pour relancer une recherche.</p>';
+  h += '<p class="tip">💡 100 % hors ligne. Cliquez une suggestion 💡 pour corriger un mot, une bulle 🕘 pour relancer une recherche.</p>';
   h += '</div>';
   return h;
 }
@@ -1496,40 +1426,36 @@ var WMAP = { "base": "base", "voyage": "trans", "nourriture": "resto",
              "shopping": "shop", "santé": "urgence", "tech": "travail" };
 function nombresBlock(){
   var h = '<div class="info-card">';
-  h += '<h3>🔢 Dire un nombre en anglais</h3>';
-  h += '<p>Tapez un nombre : il s\'écrit et se prononce en anglais, sans internet.</p>';
+  h += '<h3>🔢 Écrire un nombre en anglais</h3>';
+  h += '<p>Tapez un nombre : il s\'écrit en toutes lettres avec sa prononciation approximative, sans internet.</p>';
   h += '<div class="numbox">';
   h += '<input id="numIn" type="number" inputmode="numeric" min="0" placeholder="42" style="flex:1;border:0;outline:none;font-size:1.05rem;background:transparent;color:var(--ink);min-width:0;">';
-  h += '<button id="numGo" class="abtn">Dire</button>';
+  h += '<button id="numGo" class="abtn">Afficher</button>';
   h += '</div>';
   h += '<div id="numOut" class="numout" style="display:none;">';
   h += '<div class="en"></div><div class="pro"></div>';
-  h += '<div class="actions" style="justify-content:center;"><button class="abtn ttsb" data-lang="en-US">🔊 Écouter</button></div>';
   h += '</div>';
   h += '<p class="tip">Les nombres s\'écrivent avec des tirets (forty-two) et « and » devant les dizaines (one hundred and five).</p>';
   h += '</div>';
   h += '<div class="sect">🔤 Compter de 1 à 20</div>';
   for (var i = 1; i <= 20; i++){
-    h += '<button class="abtn vocab-chip ttsb" data-txt="' + esc(U[i]) + '" data-lang="en-US">' + i + ' · ' + esc(U[i]) + '</button>';
+    h += '<span class="vocab-chip">' + i + ' · ' + esc(U[i]) + '</span>';
   }
-  h += '<div class="sect">🕐 Dire l\'heure</div>';
+  h += '<div class="sect">🕐 L\'heure</div>';
   h += '<div class="card">';
   h += '<div class="fr">Quelle heure est-il ?</div>';
   h += '<div class="en">What time is it?</div>';
   h += '<div class="pro">ouate taïme izite</div>';
-  h += '<div class="actions"><button class="abtn ttsb" data-txt="What time is it?" data-lang="en-US">🔊 Écouter</button></div>';
   h += '</div>';
   h += '<div class="card">';
   h += '<div class="fr">Il est 8 heures</div>';
   h += '<div class="en">It is eight o\'clock</div>';
   h += '<div class="pro">ite iz eïte o-klok</div>';
-  h += '<div class="actions"><button class="abtn ttsb" data-txt="It is eight o\'clock" data-lang="en-US">🔊 Écouter</button></div>';
   h += '</div>';
   h += '<div class="card">';
   h += '<div class="fr">À trois heures et demie</div>';
   h += '<div class="en">At half past three</div>';
   h += '<div class="pro">ate haf passe ssri</div>';
-  h += '<div class="actions"><button class="abtn ttsb" data-txt="At half past three" data-lang="en-US">🔊 Écouter</button></div>';
   h += '</div>';
   return h;
 }
@@ -1545,10 +1471,8 @@ function attachNum(){
     out.style.display = "block";
     var ch = out.querySelector(".en");
     var cp = out.querySelector(".pro");
-    var cb = out.querySelector(".ttsb");
     if (ch) ch.textContent = en;
     if (cp) cp.textContent = numPro(en);
-    if (cb) cb.setAttribute("data-txt", en);
   };
   inp.addEventListener("input", run);
   var go = document.getElementById("numGo");
@@ -1569,12 +1493,104 @@ function infoBlock(){
   h += '<p>☀️ Chaleur extrême d\'avril à octobre : hydratation et casquette indispensables.</p>';
   h += '<p class="tip">🇫🇷 Ambassade de France à Doha : West Bay, Doha. En cas de souci de passeport, c\'est le premier réflexe.</p>';
   h += '</div>';
-  h += '<div class="card" style="margin-top:10px;">';
-  h += '<div class="lbl">🔊 Son &amp; voix</div>';
-  h += '<p id="ttsDiag">Diagnostic…</p>';
-  h += '<div class="actions"><button class="abtn ttsb" data-txt="Sound test. The voice works." data-lang="en-US">🔊 Tester le son</button></div>';
-  h += '<p class="tip">Pas de son ? 1) Monte le volume MÉDIA du téléphone. 2) Vérifie la synthèse vocale : Réglages → Langue et saisie → Synthèse vocale → Google. 3) Si aucune voix anglaise n\'apparaît ci-dessus, installe la voix anglaise dans les réglages de la synthèse vocale Google.</p>';
+  return h;
+}
+
+/* ================================================================
+   IATA & FRET — l'anglais de la douane et du colisage (v6)
+   Valeurs : IATA DGR 67e éd. (2026) + Battery Guidance Document 2026.
+   Toujours confirmer dans l'édition DGR en vigueur + variations
+   État/opérateur (ex. FRG-07 France : n° d'urgence 24 h sur la DGD).
+   ================================================================ */
+var IATA_CUSTOMS = [
+  ["Je n'ai rien à déclarer.", "I have nothing to declare.", "aï haf nazeune tou di-klére", ""],
+  ["J'ai quelque chose à déclarer.", "I have something to declare.", "aï haf seumzine tou di-klére", "Matériel pro : préfère la déclaration volontaire, jamais la dissimulation."],
+  ["C'est du matériel professionnel de secours (sapeurs-pompiers).", "This is professional rescue equipment — fire service.", "diz iz pro-féchionel ri-sskiouz ékipmenne", "Ton métier, ta légitimité : matériel de service, pas de la revente."],
+  ["Voici ma déclaration de l'expéditeur.", "Here is my Shipper's Declaration for Dangerous Goods.", "hère iz maï chip-eurz déklérécheune fore dén-djerousse goude", "La DGD est en anglais, 2 exemplaires, format paysage hachuré."],
+  ["Voici la fiche de données de sécurité.", "Here is the Safety Data Sheet (SDS).", "hère iz ze sêfti dâte chite", "Fiche du fabricant — appui de classification."],
+  ["Voici le résumé d'essai UN 38.3 des batteries.", "Here is the UN 38.3 test summary for the batteries.", "hère iz ze iou-ène ssrèti-eune sseste sseummarï", "Obligatoire pour toute pile/accus lithium ; QR/URL acceptés."],
+  ["Ces radios nécessitent une homologation locale — j'ai l'autorisation.", "These radios require local type approval — I have the authorization.", "dize rédiosse ri-kouère loukal taïpe aprouval", "Qatar : homologation CRA exigée avant importation/utilisation des TPH 700."],
+  ["C'est un équipement de service, pas destiné à la revente.", "It is service equipment, not for resale.", "ite iz sservice ékipmenne, note fore ri-sêle", ""],
+  ["Où est le bureau de douane ?", "Where is the customs office?", "ouère iz ze kasteume offisse", ""],
+  ["Dois-je payer des droits de douane sur ce matériel ?", "Do I have to pay customs duty on this equipment?", "dou aï haf tou pê kasteume dioutï", ""],
+  ["Je peux vous montrer la facture et le bon de livraison.", "I can show you the invoice and the delivery note.", "aï kann cho iou ze invoiss ennde ze dilivri nôte", ""]
+];
+var IATA_SHIP = [
+  ["Je dois déposer une expédition fret.", "I need to drop off a freight shipment.", "aï nide tou droppe off e frête chipmenne", ""],
+  ["Où est le terminal fret ?", "Where is the cargo terminal?", "ouère iz ze kargo termineul", ""],
+  ["Quel est le numéro de la lettre de transport aérien ?", "What is the air waybill number?", "ouate iz ze ère ouèbil nambre", "AWB = le contrat de transport, numéro 11 chiffres (157-12345675 par ex.)."],
+  ["L'expédition contient des marchandises dangereuses.", "The shipment contains dangerous goods.", "ze chipmenne conteinz dén-djerousse goude", "À déclarer dès la réservation fret."],
+  ["C'est uniquement pour avion cargo.", "This is for cargo aircraft only.", "diz iz fore kargo ère-kraïft onli", "CAO : étiquette obligatoire, passagers interdits (ex. UN 3480 toutes sections)."],
+  ["Voici la notification au commandant.", "Here is the NOTOC — the Notice to Captain.", "hère iz ze nô-tok — ze notice tou kaptêne", "Document remis à l'équipage pour les MDD."],
+  ["C'est un suremballage, les marquages sont reproduits.", "This is an overpack — the markings are reproduced on it.", "diz iz ène overpak — ze markeulinks ar riprodiouside", "Overpack : étiquettes et marquages à reproduire, sauf matières à séparer."],
+  ["Quantités limitées — marque Y.", "Limited quantities — Y mark, no Shipper's Declaration required.", "limiteide kouantitiz — ouaï mark, no chip-eurz déklérécheune", "Colis ≤ 30 kg, PI en Y (ex. Y341), pas de DGD."],
+  ["Le numéro d'urgence 24 h/24 figure sur la déclaration.", "The 24-hour emergency contact number is on the declaration.", "ze ouènty-four ours émer-djensi kontakt nambre iz one déklérécheune", "Obligatoire (ex. FRG-07 France) : téléphone joignable TOUT le transport."],
+  ["Vérifiez les variations État et opérateur, s'il vous plaît.", "Please check the State and Operator variations.", "pliz tchek ze stête ennde opérateur vériécheune", "Chaque pays/compagnie peut restreindre ou interdire (ex. beaucoup refusent la Section II lithium)."],
+  ["Je suis expéditeur formé (CBTA).", "I am a CBTA-trained shipper.", "aï am e sï-bi-ti-ê trênde chip-eur", "Formation MDD par fonction, récurrente ≤ 24 mois."],
+  ["Qui est le transitaire ?", "Who is the freight forwarder?", "hou iz ze frête forwardeur", ""]
+];
+var IATA_RADIO = [
+  ["Batteries lithium-ion contenues dans l'équipement.", "Lithium-ion batteries contained in equipment — UN 3481, PI 967.", "lideum-ion batriz contênde in équipmenne", "Radios avec batterie installée. § II : piles ≤ 5 kg par colis, autorisé passagers — SoC ≤ 30 % recommandé."],
+  ["Batteries lithium-ion emballées avec l'équipement.", "Lithium-ion batteries packed with equipment — UN 3481, PI 966.", "lideum-ion batriz packte ouide équipmenne", "Radio + batteries de rechange dans le même colis. SoC ≤ 30 % obligatoire (2026) ; § I : 35 kg cargo ; § IB : DGD + CAO selon quantités."],
+  ["Batteries lithium-ion seules (rechanges).", "Lithium-ion batteries — UN 3480, PI 965, cargo aircraft only.", "lideum-ion batriz — iou-ène ssrèti-foute-zéro", "Interdit avion passagers, toutes sections. § IB : ≤ 10 kg cargo, SoC ≤ 30 %, marquage lithium + UN 38.3, DGD."],
+  ["Les radios sont éteintes et protégées contre tout déclenchement.", "The radios are switched off and protected against accidental activation.", "ze rédiosse ar souitchde off ennde protec-tide égenst aksidentel aktivécheune", "Protection contre l'activation involontaire — à affirmer en douane."],
+  ["État de charge des batteries : 30 % ou moins.", "The batteries are at 30 % state of charge or less.", "ze batriz ar atte ssirty purssente stête off tcharge or lesse", "SoC ≤ 30 % : PI 965/966 obligatoire, PI 967 recommandé (2026)."],
+  ["Voici le résumé d'essai UN 38.3.", "Here is the UN 38.3 test summary.", "hère iz ze iou-ène ssrèti-eune sseste sseummarï", "Batteries TPH 700 ≈ 17 Wh (7,4 V / 2,3 Ah) — sous la limite 100 Wh."],
+  ["La classe 7 (radioactif) est hors de mon périmètre — voir la réglementation IAEA.", "Class 7 radioactive material is out of my scope — refer to IAEA regulations.", "klass sevn rédioaktiv materiâl iz aoute ov maï sscope", "Jamais d'expédition classe 7 via IATA sans compétence radiactive."]
+];
+var IATA_VOCAB = [
+  ["Air Waybill (AWB)", "lettre de transport aérien — contrat de transport"],
+  ["Shipper's Declaration (DGD)", "déclaration de l'expéditeur — en anglais, 2 exemplaires"],
+  ["NOTOC", "notice au commandant (Notice to Captain)"],
+  ["Packing Instruction (PI)", "instruction d'emballage (PI 965–970 pour batteries)"],
+  ["Proper Shipping Name (PSN)", "dénomination réglementaire exacte — jamais traduite, jamais tronquée"],
+  ["Packing Group (PG I/II/III)", "groupe d'emballage — danger décroissant I → III"],
+  ["Cargo Aircraft Only (CAO)", "uniquement avion cargo"],
+  ["Limited Quantities (LQ)", "quantités limitées — marque Y, pas de DGD, colis ≤ 30 kg"],
+  ["Excepted Quantities (EQ)", "quantités exceptées — marque E, pas de DGD"],
+  ["State of Charge (SoC)", "état de charge — ≤ 30 % pour piles lithium"],
+  ["UN 38.3 test summary", "résumé d'essais UN 38.3 — obligatoire piles/batteries lithium"],
+  ["Overpack", "suremballage — marquages et étiquettes reproduits dessus"],
+  ["ULD (Unit Load Device)", "conteneur ou palette avion"],
+  ["Freight forwarder", "transitaire"],
+  ["Customs clearance", "dédouanement"],
+  ["Dangerous goods (DG)", "marchandises dangereuses (MDD)"],
+  ["Flammable liquid", "liquide inflammable — classe 3 (essence UN 1203)"],
+  ["Oxidizer", "comburant — classe 5.1 (oxygène UN 1072)"],
+  ["Corrosive", "corrosif — classe 8"],
+  ["Dry ice", "glace carbonique — UN 1845, PI 954, mention LTA obligatoire"],
+  ["Fire extinguisher", "extincteur — UN 1044"],
+  ["Aerosols", "aérosols — UN 1950, classe 2.1"],
+  ["Oxygen, compressed", "oxygène comprimé — UN 1072, classe 2.2 (5.1)"],
+  ["Life-saving appliances", "équipements de sauvetage (gilets, fusées)"],
+  ["Class 7 — Radioactive", "matière radioactive — périmètre IAEA, pas IATA"],
+  ["State / Operator variations", "variations État / compagnie (ex. FRG-07 France : n° d'urgence 24 h)"]
+];
+function iataCard(fr, en, pro, note){
+  var h = '<div class="card">';
+  h += '<div class="fr">' + esc(fr) + '</div>';
+  h += '<div class="en">' + esc(en) + '</div>';
+  if (pro) h += '<div class="pro">' + esc(pro) + '</div>';
+  if (note) h += '<div class="note">ℹ️ ' + esc(note) + '</div>';
   h += '</div>';
+  return h;
+}
+function iataBlock(){
+  var h = '<div class="info-card">';
+  h += '<h3>🛫 IATA &amp; fret — l\'anglais de la douane et du colisage</h3>';
+  h += '<p>Phrases et vocabulaire professionnels pour déclarer, expédier et justifier un colis réglementé. Référence : IATA DGR 67e éd. (2026) + Battery Guidance 2026 — vérifie toujours l\'édition en vigueur et les variations État/opérateur.</p>';
+  h += '</div>';
+  h += '<div class="sect">🛃 À la douane &amp; sécurité aéroport</div>';
+  for (var i = 0; i < IATA_CUSTOMS.length; i++) h += iataCard(IATA_CUSTOMS[i][0], IATA_CUSTOMS[i][1], IATA_CUSTOMS[i][2], IATA_CUSTOMS[i][3]);
+  h += '<div class="sect">📦 Colisage &amp; fret</div>';
+  for (var j = 0; j < IATA_SHIP.length; j++) h += iataCard(IATA_SHIP[j][0], IATA_SHIP[j][1], IATA_SHIP[j][2], IATA_SHIP[j][3]);
+  h += '<div class="sect">📻 Radios TPH 700 &amp; batteries lithium</div>';
+  for (var k = 0; k < IATA_RADIO.length; k++) h += iataCard(IATA_RADIO[k][0], IATA_RADIO[k][1], IATA_RADIO[k][2], IATA_RADIO[k][3]);
+  h += '<div class="sect">🔤 Vocabulaire fret &amp; marchandises dangereuses</div>';
+  for (var m = 0; m < IATA_VOCAB.length; m++){
+    h += '<span class="vocab-chip"><b>' + esc(IATA_VOCAB[m][0]) + '</b> — ' + esc(IATA_VOCAB[m][1]) + '</span>';
+  }
+  h += '<p class="tip">⚠️ Classe 7 (radioactif) : hors périmètre IATA — réglementation IAEA. Les valeurs chiffrées évoluent à chaque édition du DGR : cette fiche est une aide de terrain, la référence reste le DGR en vigueur et l\'app « Assistant IATA — MDD ».</p>';
   return h;
 }
 
@@ -1582,7 +1598,7 @@ function infoBlock(){
    MODE APPRENTISSAGE v4 — SOS, quiz, flashcards, mini-leçons
    ================================================================ */
 
-/* réflexes SOS : un tap = la phrase sort en anglais à voix haute ET s'affiche en grand */
+/* réflexes SOS : un tap = la phrase s'affiche en grand à l'écran */
 var SOS = [
   ["Help!", "🆘 Au secours", "hèlp"],
   ["Call an ambulance!", "🚑 Ambulance", "kol ène ambioleunce"],
@@ -1592,8 +1608,8 @@ var SOS = [
   ["How much is it?", "💶 Combien ?", "haoue matche iz ite"]
 ];
 function sosRow(){
-  var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça parle (et ça s\'affiche)</div>';
-  h += '<p class="tip">En galère ? Tapez un gros bouton : l\'app dit la phrase à votre place et l\'écrit en grand — vous pouvez aussi montrer l\'écran.</p>';
+  var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça s\'affiche</div>';
+  h += '<p class="tip">En galère ? Tapez un gros bouton : la phrase s\'affiche en grand avec sa prononciation — montrez l\'écran à votre interlocuteur.</p>';
   for (var i = 0; i < SOS.length; i++){
     h += '<button class="abtn sosb" data-txt="' + esc(SOS[i][0]) + '" data-pro="' + esc(SOS[i][2]) + '" style="margin:4px 6px 0 0;font-size:.95rem;padding:10px 16px;">' + esc(SOS[i][1]) + '</button>';
   }
@@ -1603,7 +1619,6 @@ function sosRow(){
 function sosShow(el){
   var st = el.getAttribute("data-txt") || "";
   var sp = el.getAttribute("data-pro") || "";
-  speak(st, "en-US");
   var so = document.getElementById("sosOut");
   if (so){
     so.style.display = "block";
@@ -1670,7 +1685,6 @@ function quizAnswer(opt){
   if (!QZ.on || QZ.done || !QZ.cur) return;
   var ok = norm(opt) === norm(QZ.cur.en);
   if (ok) QZ.score++;
-  speak(QZ.cur.en, "en-US");
   QZ.i++;
   if (QZ.i >= 10){
     QZ.on = false; QZ.done = true;
@@ -1711,7 +1725,6 @@ function flashBlock(){
   if (FC.shown){
     h += '<div class="en" style="font-size:1.25rem;">' + esc(w.en) + '</div>';
     if (w.pro) h += '<div class="pro">' + esc(w.pro) + '</div>';
-    h += '<div class="actions"><button class="abtn ttsb" data-txt="' + esc(w.en) + '" data-lang="en-US">🔊 Écouter</button></div>';
     h += '</div>';
     h += '<div class="actions" style="margin-top:10px;">';
     h += '<button class="abtn fcOk" data-id="' + esc(w.id) + '">✓ Je sais</button>';
@@ -1778,12 +1791,9 @@ function lessonsBlock(){
   for (var i = 0; i < LESSONS.length; i++){
     h += '<div class="card">';
     h += '<div class="lbl">' + esc(LESSONS[i].t) + '</div>';
-    var all = [];
     for (var j = 0; j < LESSONS[i].rows.length; j++){
       h += '<p>' + esc(LESSONS[i].rows[j][0]) + ' → <b>' + esc(LESSONS[i].rows[j][1]) + '</b></p>';
-      all.push(LESSONS[i].rows[j][1]);
     }
-    h += '<div class="actions"><button class="abtn ttsb" data-txt="' + esc(all.join(", ")) + '" data-lang="en-US">🔊 Écouter la leçon</button></div>';
     h += '</div>';
   }
   return h;
@@ -1801,6 +1811,7 @@ function learnBlock(){
 function listHtml(){
   if (currentCat === "trad") return translatorBlock();
   if (currentCat === "apprendre") return learnBlock();
+  if (currentCat === "iata") return iataBlock();
   if (currentCat === "nombres") return nombresBlock();
   if (currentCat === "infos") return infoBlock();
   var h = "";
@@ -1829,7 +1840,6 @@ function render(){
   if (list) list.innerHTML = listHtml();
   attachTrad();
   attachNum();
-  ttsDiag();
 }
 
 /* ---------------- écouteurs globaux (délégation) ---------------- */
@@ -1856,10 +1866,6 @@ function render(){
         if (el.classList){
           if (el.classList.contains("sosb")){
             sosShow(el);
-            return;
-          }
-          if (el.classList.contains("ttsb")){
-            speak(el.getAttribute("data-txt") || "", el.getAttribute("data-lang") || "en-US");
             return;
           }
           if (el.classList.contains("tr-h")){
@@ -1927,4 +1933,5 @@ if ("serviceWorker" in navigator){
 </script>
 </body>
 </html>
+
 
