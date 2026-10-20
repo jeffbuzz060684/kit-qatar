@@ -96,13 +96,14 @@ footer{
 <div class="wrap">
   <header>
     <h1>Kit de survie Qatar 🇶🇦</h1>
-    <span class="offline">v3 · hors ligne</span>
+    <span class="offline">v4 · hors ligne</span>
   </header>
-  <p class="tagline">FR ↔ EN · traducteur hors ligne pro + phrases de survie — fonctionne sans réseau</p>
+  <p class="tagline">FR ↔ EN · traducteur hors ligne pro + mode apprentissage — fonctionne sans réseau</p>
   <nav id="chips" aria-label="Catégories"></nav>
   <main id="list"></main>
   <footer>
-    Traducteur embarqué : ~700 mots, ~80 expressions, détection de langue, correction intuitive.<br>
+    Traducteur embarqué : ~600 mots + ~110 expressions, détection de langue, correction intuitive.<br>
+    Nouveau v4 : quiz express, flashcards, réflexes SOS et mise à jour automatique fiable.<br>
     100 % hors ligne : aucune connexion requise. Synthèse vocale via l'appareil.
   </footer>
 </div>
@@ -117,6 +118,7 @@ footer{
 
 var CATS = [
   ["trad", "🈯 Traducteur"],
+  ["apprendre", "🎓 Apprendre"],
   ["base", "👋 Essentiels"],
   ["debg", "🙋 Se débrouiller"],
   ["aero", "✈️ Aéroport & avion"],
@@ -1335,6 +1337,7 @@ function translatorBlock(){
   var h = '<div class="info-card">';
   h += '<h3>🈯 Traducteur hors ligne</h3>';
   h += '<p>Écrivez en français ou en anglais : la langue est détectée automatiquement et la traduction apparaît pendant la frappe. ~600 mots + ~110 expressions intégrés, aucune connexion requise.</p>';
+  h += sosRow();
   h += '<div class="dirbox">';
   h += '<button class="abtn dir' + (trDir === "fe" ? " active" : "") + '" data-dir="fe">FR → EN</button>';
   h += '<button class="abtn dir' + (trDir === "ef" ? " active" : "") + '" data-dir="ef">EN → FR</button>';
@@ -1510,9 +1513,218 @@ function infoBlock(){
   return h;
 }
 
+/* ================================================================
+   MODE APPRENTISSAGE v4 — SOS, quiz, flashcards, mini-leçons
+   ================================================================ */
+
+/* réflexes SOS : un tap = la phrase sort en anglais à voix haute */
+var SOS = [
+  ["Help!", "🆘 Au secours"],
+  ["Call an ambulance!", "🚑 Ambulance"],
+  ["Call the police!", "🚓 Police"],
+  ["I need a doctor", "👨‍⚕️ Médecin"],
+  ["Where are the toilets?", "🚻 Toilettes"],
+  ["How much is it?", "💶 Combien ?"]
+];
+function sosRow(){
+  var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça parle</div>';
+  h += '<p class="tip">En galère ? Tapez un gros bouton : l\'app dit la phrase à votre place.</p>';
+  for (var i = 0; i < SOS.length; i++){
+    h += '<button class="abtn ttsb" data-txt="' + esc(SOS[i][0]) + '" data-lang="en-US" style="margin:4px 6px 0 0;font-size:.95rem;padding:10px 16px;">' + esc(SOS[i][1]) + '</button>';
+  }
+  return h;
+}
+
+/* ---------------- quiz express ---------------- */
+var QZ = { on: false, i: 0, score: 0, done: false, cur: null };
+function quizBest(){
+  try{ return parseInt(store("qatar-quiz-best") || "0", 10) || 0; }catch(e){ return 0; }
+}
+function quizQ(){
+  var w = WD[Math.floor(Math.random() * WD.length)];
+  var opts = [w.en];
+  var guard = 0;
+  while (opts.length < 4 && guard < 300){
+    var o = WD[Math.floor(Math.random() * WD.length)].en;
+    if (opts.indexOf(o) < 0) opts.push(o);
+    guard++;
+  }
+  for (var i = opts.length - 1; i > 0; i--){
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = opts[i]; opts[i] = opts[j]; opts[j] = tmp;
+  }
+  return { fr: w.fr, en: w.en, pro: w.pro || "", opts: opts };
+}
+function quizBlock(){
+  var h = '<div class="info-card">';
+  h += '<h3>🎓 Quiz express — 10 questions</h3>';
+  if (!QZ.on && !QZ.done){
+    var b = quizBest();
+    h += '<p>Un mot français s\'affiche, choisis la bonne traduction. Correction immédiate, score conservé sur l\'appareil.</p>';
+    if (b) h += '<p>🏆 Meilleur score : <b>' + b + '/10</b></p>';
+    h += '<div class="actions"><button class="abtn big qzStart">Commencer le quiz</button></div>';
+  } else if (QZ.done){
+    var msg = QZ.score >= 9 ? "🔥 Excellent, prêt pour le Qatar !"
+      : QZ.score >= 6 ? "💪 Bien ! Encore un tour pour verrouiller."
+      : "🔄 Reprends les flashcards puis réessaie.";
+    h += '<p>Résultat : <b>' + QZ.score + '/10</b> — ' + esc(msg) + '</p>';
+    if (QZ.score >= quizBest()) h += '<p>🏆 Nouveau meilleur score !</p>';
+    h += '<div class="actions"><button class="abtn big qzStart">Rejouer</button></div>';
+  } else {
+    var q = QZ.cur;
+    h += '<p>Question ' + (QZ.i + 1) + '/10 · Score : ' + QZ.score + '</p>';
+    h += '<div class="card"><div class="lbl">Comment dit-on…</div>';
+    h += '<div class="fr" style="font-size:1.2rem;">' + esc(q.fr) + '</div></div>';
+    h += '<div class="actions">';
+    for (var i = 0; i < q.opts.length; i++){
+      h += '<button class="abtn qzOpt" data-opt="' + esc(q.opts[i]) + '">' + esc(q.opts[i]) + '</button>';
+    }
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+function quizStart(){
+  QZ.on = true; QZ.done = false; QZ.i = 0; QZ.score = 0;
+  QZ.cur = quizQ();
+  var z = document.getElementById("qzWrap");
+  if (z) z.innerHTML = quizBlock();
+}
+function quizAnswer(opt){
+  if (!QZ.on || QZ.done || !QZ.cur) return;
+  var ok = norm(opt) === norm(QZ.cur.en);
+  if (ok) QZ.score++;
+  speak(QZ.cur.en, "en-US");
+  QZ.i++;
+  if (QZ.i >= 10){
+    QZ.on = false; QZ.done = true;
+    if (QZ.score > quizBest()) store("qatar-quiz-best", String(QZ.score));
+  } else {
+    QZ.cur = quizQ();
+  }
+  var z = document.getElementById("qzWrap");
+  if (z) z.innerHTML = quizBlock();
+}
+
+/* ---------------- flashcards ---------------- */
+var FC = { pos: 0, shown: false };
+function fcState(){
+  try{ return JSON.parse(store("qatar-fc") || "{}") || {}; }catch(e){ return {}; }
+}
+function fcSave(s){ store("qatar-fc", JSON.stringify(s)); }
+function fcDeck(){
+  var st = fcState();
+  var ko = [], rest = [];
+  for (var i = 0; i < WD.length; i++){
+    if (st[WD[i].id] === "ko") ko.push(WD[i]); else rest.push(WD[i]);
+  }
+  return ko.concat(rest);
+}
+function flashBlock(){
+  var st = fcState();
+  var known = 0;
+  for (var k in st){ if (st[k] === "ok") known++; }
+  var deck = fcDeck();
+  if (FC.pos >= deck.length) FC.pos = 0;
+  var w = deck[FC.pos];
+  var h = '<div class="info-card">';
+  h += '<h3>🃏 Flashcards — ' + known + '/' + WD.length + ' mots maîtrisés</h3>';
+  if (!w){ h += '<p>Deck vide.</p></div>'; return h; }
+  h += '<div class="card"><div class="lbl">Carte ' + (FC.pos + 1) + '/' + deck.length + '</div>';
+  h += '<div class="fr" style="font-size:1.2rem;">' + esc(w.fr) + '</div>';
+  if (FC.shown){
+    h += '<div class="en" style="font-size:1.25rem;">' + esc(w.en) + '</div>';
+    if (w.pro) h += '<div class="pro">' + esc(w.pro) + '</div>';
+    h += '<div class="actions"><button class="abtn ttsb" data-txt="' + esc(w.en) + '" data-lang="en-US">🔊 Écouter</button></div>';
+    h += '</div>';
+    h += '<div class="actions" style="margin-top:10px;">';
+    h += '<button class="abtn fcOk" data-id="' + esc(w.id) + '">✓ Je sais</button>';
+    h += '<button class="abtn fcKo" data-id="' + esc(w.id) + '">↻ À revoir</button>';
+    h += '</div>';
+  } else {
+    h += '</div>';
+    h += '<div class="actions" style="margin-top:10px;"><button class="abtn big fcFlip">Voir la réponse</button></div>';
+  }
+  h += '<p class="tip">« À revoir » : la carte revient en priorité. Objectif : les 80 mots maîtrisés avant le départ.</p>';
+  h += '</div>';
+  return h;
+}
+function fcFlip(){
+  FC.shown = true;
+  var z = document.getElementById("fcWrap");
+  if (z) z.innerHTML = flashBlock();
+}
+function fcMark(kind){
+  var st = fcState();
+  var deck = fcDeck();
+  var w = deck[FC.pos];
+  if (!w) return;
+  st[w.id] = kind;
+  fcSave(st);
+  FC.shown = false;
+  var nd = fcDeck();
+  FC.pos = (FC.pos + 1) % Math.max(1, nd.length);
+  var z = document.getElementById("fcWrap");
+  if (z) z.innerHTML = flashBlock();
+}
+
+/* ---------------- mini-leçons 30 secondes ---------------- */
+var LESSONS = [
+  { t: "1️⃣ Saluer et remercier", rows: [
+    ["Bonjour / Salut", "hello / hi"],
+    ["Merci beaucoup", "thank you very much"],
+    ["S'il vous plaît", "please"],
+    ["Pardon / désolé", "sorry"],
+    ["Au revoir", "goodbye"]
+  ]},
+  { t: "2️⃣ Demander de l'aide", rows: [
+    ["Au secours !", "help!"],
+    ["Pouvez-vous m'aider ?", "can you help me?"],
+    ["J'ai besoin d'aide", "I need help"],
+    ["Appelez un médecin", "call a doctor"],
+    ["Je ne comprends pas", "I don't understand"]
+  ]},
+  { t: "3️⃣ Acheter et payer", rows: [
+    ["C'est combien ?", "how much is it?"],
+    ["C'est trop cher", "that's too expensive"],
+    ["Je paie par carte", "I'll pay by card"],
+    ["Le reçu, s'il vous plaît", "the receipt, please"]
+  ]},
+  { t: "4️⃣ Se situer dans la ville", rows: [
+    ["Où est… ?", "where is…?"],
+    ["À gauche / à droite", "to the left / to the right"],
+    ["Tout droit", "straight on"],
+    ["Je suis perdu", "I'm lost"]
+  ]}
+];
+function lessonsBlock(){
+  var h = '<div class="sect">⏱️ Mini-leçons 30 secondes</div>';
+  for (var i = 0; i < LESSONS.length; i++){
+    h += '<div class="card">';
+    h += '<div class="lbl">' + esc(LESSONS[i].t) + '</div>';
+    var all = [];
+    for (var j = 0; j < LESSONS[i].rows.length; j++){
+      h += '<p>' + esc(LESSONS[i].rows[j][0]) + ' → <b>' + esc(LESSONS[i].rows[j][1]) + '</b></p>';
+      all.push(LESSONS[i].rows[j][1]);
+    }
+    h += '<div class="actions"><button class="abtn ttsb" data-txt="' + esc(all.join(", ")) + '" data-lang="en-US">🔊 Écouter la leçon</button></div>';
+    h += '</div>';
+  }
+  return h;
+}
+function learnBlock(){
+  var h = '<div class="sect">🎓 Apprendre vite et se débrouiller seul</div>';
+  h += '<p class="tip">3 outils : le quiz pour tester, les flashcards pour mémoriser, les leçons pour les réflexes.</p>';
+  h += '<div id="qzWrap">' + quizBlock() + '</div>';
+  h += '<div id="fcWrap">' + flashBlock() + '</div>';
+  h += lessonsBlock();
+  return h;
+}
+
 /* ---------------- rendu ---------------- */
 function listHtml(){
   if (currentCat === "trad") return translatorBlock();
+  if (currentCat === "apprendre") return learnBlock();
   if (currentCat === "nombres") return nombresBlock();
   if (currentCat === "infos") return infoBlock();
   var h = "";
@@ -1594,6 +1806,26 @@ function render(){
             render();
             return;
           }
+          if (el.classList.contains("qzStart")){
+            quizStart();
+            return;
+          }
+          if (el.classList.contains("qzOpt")){
+            quizAnswer(el.getAttribute("data-opt") || "");
+            return;
+          }
+          if (el.classList.contains("fcFlip")){
+            fcFlip();
+            return;
+          }
+          if (el.classList.contains("fcOk")){
+            fcMark("ok");
+            return;
+          }
+          if (el.classList.contains("fcKo")){
+            fcMark("ko");
+            return;
+          }
         }
         el = el.parentNode;
       }
@@ -1605,7 +1837,11 @@ render();
 </script>
 <script>
 if ("serviceWorker" in navigator){
-  navigator.serviceWorker.register("./sw.js").catch(function(){});
+  navigator.serviceWorker.register("./sw.js", { updateViaCache: "none" }).catch(function(){});
+  var kzUpd = false;
+  navigator.serviceWorker.addEventListener("controllerchange", function(){
+    if (!kzUpd){ kzUpd = true; try{ location.reload(); }catch(e){} }
+  });
 }
 </script>
 </body>
