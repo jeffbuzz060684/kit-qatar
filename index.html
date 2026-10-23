@@ -99,25 +99,26 @@ footer{
 <div class="wrap">
   <header>
     <h1>Kit de survie Qatar 🇶🇦</h1>
-    <span class="offline">v6 · hors ligne</span>
+    <span class="offline">v7 · hors ligne</span>
   </header>
   <p class="tagline">FR ↔ EN · traducteur pro + IATA fret &amp; douane + apprentissage — 100 % hors ligne</p>
   <nav id="chips" aria-label="Catégories"></nav>
   <main id="list"></main>
   <footer>
-    Traducteur embarqué : ~600 mots + ~110 expressions, détection de langue, correction intuitive.<br>
-    Nouveau v6 : section 🛫 IATA &amp; fret (douane, colisage, marchandises dangereuses, TPH 700/batteries) — audio retiré, app 100 % silencieuse.<br>
+    Traducteur embarqué : 1212 mots + 150 expressions, détection de langue, correction intuitive.<br>
+    v6 : section 🛫 IATA &amp; fret · v7 : vocabulaire enrichi (359 phrases, 140 mots flashcards), SOS élargis, quiz mots + phrases — app 100 % silencieuse.<br>
     100 % hors ligne : aucune connexion requise.
   </footer>
 </div>
 <script>
 "use strict";
 /* ================================================================
-   Kit de survie Qatar v6 — 100 % hors ligne, 100 % silencieuse (audio retiré en v6)
+   Kit de survie Qatar v7 — 100 % hors ligne, 100 % silencieuse (audio retiré en v6)
    - Traducteur : phrases proches + mot à mot + détection de langue
    - Correction intuitive des mots inconnus, suggestions
    - v4 : quiz, flashcards, SOS, mini-leçons
    - v6 : section IATA & fret — l'anglais de la douane et du colisage
+   - v7 : encore plus de mots et de phrases, SOS élargis, quiz mots + phrases
    ================================================================ */
 
 var CATS = [
@@ -306,8 +307,8 @@ var P = [
 "resto|Le pourboire est-il inclus ?|Is the tip included?|iz ze tip inkloudede",
 "resto|Le service est-il compris ?|Is service included?|ize seurvis inkloudede",
 /* shopping */
-"shop|C'est combien ?|How much is it?|haoue matche izite",
-"shop|C'est trop cher|That's too expensive|dats tou iksspensive",
+"shop|Ça fait combien ?|How much is that?|haoue matche iz dat",
+"shop|C'est hors de prix|That's way too expensive|dats oueï tou iksspensive",
 "shop|Avez-vous moins cher ?|Do you have anything cheaper?|dou iou hav enissine tchipere",
 "shop|Je peux payer par carte ?|Can I pay by card?|kann aï peï baï kard",
 "shop|Je peux voir ?|Can I see it?|kann aï sï ite",
@@ -326,7 +327,7 @@ var P = [
 "shop| Appelez ce numéro|Call this number|kole disse nombeur",
 /* chemin */
 "chemin|Où est… ?|Where is…?|ouèr iz",
-"chemin|Comment aller à… ?|How do I get to…?|haoue dou aï gueute tou",
+"chemin|Quel chemin faut-il prendre pour… ?|Which way should I take to get to…?|ouitch oueï choude aï teïke tou gueute tou",
 "chemin|C'est loin ?|Is it far?|izite fare",
 "chemin|Je peux y aller à pied ?|Can I walk there?|kann aï ouoke dèr",
 "chemin|C'est de ce côté ?|Is it on this side?|izite one disse saïde",
@@ -413,12 +414,106 @@ var P = [
 "arabe|Bienvenue (ahlan)|Welcome (ahlan)|ouelkeum / ahlann",
 "arabe|Allez-y (tafaddal)|Go ahead (tafaddal)|go haïde / tafaddall",
 "arabe|Inchallah|Inshallah (God willing)|incheullllah",
-"arabe|Je ne parle pas arabe|I don't speak Arabic|aï done ssppik arabik",
+"arabe|Je ne parle pas bien arabe|I don't speak much Arabic|aï done ssppik matche arabik|Politesse utile avec les mots arabes de cette page",
 "arabe|Vous parlez français ?|Do you speak French?|dou iou sspik frenche",
 "arabe|Halal|Halal|allall",
 "arabe|Saha ! (bon appétit / à ta santé)|Saha! (enjoy / cheers)|sahha",
 "arabe|Yalla (allez / viens)|Yalla (let's go)|yallla",
-"arabe|Marhaba (bienvenue)|Marhaba (welcome)|marhabba"
+"arabe|Marhaba (bienvenue)|Marhaba (welcome)|marhabba",
+"base|Que signifie ce mot ?|What does this word mean?|ouate daz diss seurde minne|",
+"base|Je ne suis pas sûr|I'm not sure|aïm note choure|",
+"base|D'accord / OK|All right / OK|ol raïte / o-kè|",
+"base|C'est parfait|That's perfect|dats peurfecte|",
+"base|Pas de problème|No problem|no probleume|",
+"base|Bien sûr|Of course|of korse|",
+"base|Attendez un instant, s'il vous plaît|Wait a moment, please|ouète e meumeunte pliz|",
+"base|Vous pouvez m'écrire ça ?|Can you write it down?|kann iou raïte ite daoune|",
+"base|Quel est votre nom ?|What is your name?|ouate iz iore neïm|",
+"base|Je ne connais pas ce mot|I do not know the word|aï doneute no ze seurde|",
+"base|Répétez plus lentement|Please repeat more slowly|pliz ripîte more sloueuli|",
+"debg|J'ai perdu…|I've lost…|aïv loste|",
+"debg|Je suis en retard|I'm late|aïm leïte|",
+"debg|Pouvez-vous me le montrer ?|Can you show me?|kann iou cho mi|",
+"debg|Je voudrais ceci|I would like this one|aï woude laïke diss ouane|",
+"debg|Aidez-moi, s'il vous plaît|Help me, please|hèlp mi pliz|",
+"debg|Je ne trouve pas mes affaires|I can't find my things|aï kante faïnde maï ssingue|",
+"debg|Appelez cette personne|Call this person|kol diss peursseune|",
+"debg|Pouvez-vous parler plus simplement ?|Can you use simpler words?|kann iou iouze ssimpleur seurds|",
+"debg|Je m'excuse pour mon accent|Sorry for my accent|sorri fore maï aksante|",
+"debg|Je comprends un peu|I understand a little|aï andeurstend e litel|",
+"aero|Où est l'enregistrement ?|Where is the check-in?|ouère iz ze tchek-ine|",
+"aero|C'est mon billet électronique|Here is my e-ticket|hière iz maï i-tikette|",
+"aero|J'ai un bagage à main|I have a carry-on|aï hav e kari-one|",
+"aero|Mon vol part de quelle porte ?|Which gate is my flight?|ouitch geïte iz maï flaïte|",
+"aero|Le vol est retardé|The flight is delayed|ze flaïte iz dilaïde|",
+"aero|Mon bagage n'est pas arrivé|My luggage didn't arrive|maï laguidje didneute araïve|",
+"aero|Je transite par Doha|I'm in transit through Doha|aïm ine transsite ssrou Doha|",
+"aero|Où puis-je peser ma valise ?|Where can I weigh my luggage?|ouère kann aï oueï maï laguidje|",
+"aero|Je voudrais un siège près du hublot|I would like a window seat|aï woude laïke e ouindeu ssïte|",
+"trans|Continuez tout droit|Keep going straight|kip goeune sstrèïte|",
+"trans|C'est la bonne adresse ?|Is this the right address?|iz diss ze raïte adreusse|",
+"trans|Le compteur, s'il vous plaît|The meter, please|ze mïteure pliz|",
+"trans|Vous acceptez la carte ?|Do you take card?|dou iou teïke karde|",
+"trans|Où puis-je acheter une carte de métro ?|Where can I buy a metro card?|ouère kann aï baï e méttro karde|",
+"trans|Quel est le prochain train ?|When is the next train?|ouène iz ze nekste trèïne|",
+"trans|Déposez-moi au terminal 1|Drop me at terminal 1|droppe mi ate teurmineule ouane|",
+"trans|Le métro s'arrête à quelle station ?|Which metro stop is it?|ouitch méttro stoppe izite|",
+"trans|Combien coûte le trajet ?|How much is the ride?|haoue matche iz ze raïde|",
+"hotel|J'ai une réservation au nom de…|I have a booking under…|aï hav e boukeune eundeure|",
+"hotel|Je voudrais une chambre pour deux nuits|I'd like a room for two nights|aïde laïke e roume fore tou naïtes|",
+"hotel|Le petit-déjeuner est inclus ?|Is breakfast included?|iz brekfeuste inkloudeude|",
+"hotel|À quelle heure est le check-out ?|What time is check-out?|ouate taïme iz tchek-aoute|",
+"hotel|La climatisation ne fonctionne pas|The air conditioning doesn't work|ze ère kondichenneune daznte seurke|",
+"hotel|Un réveil à six heures, s'il vous plaît|A wake-up call at six, please|e oueïke-eup kol ate siks pliz|",
+"hotel|Je paie à la réception|I'll pay at the front desk|aïl peï ate ze fronte deske|",
+"hotel|Le wifi ne fonctionne pas|The wifi does not work|ze ouaï-faï daznte seurke|",
+"hotel|Puis-je avoir une serviette de bain ?|Can I have a towel?|kann aï hav e taouele|",
+"resto|La carte, s'il vous plaît|The menu, please|ze meniou pliz|",
+"resto|Je suis végétarien|I'm vegetarian|aïm vedjiteuriène|",
+"resto|Sans porc, s'il vous plaît|No pork, please|no porke pliz|",
+"resto|C'était délicieux|That was delicious|dat ouaz dilisseusse|",
+"resto|Je peux avoir à emporter ?|Can I get it to go?|kann aï guette ite tou go|",
+"resto|De l'eau plate ou gazeuse|Still or sparkling water|stile ore sparkeune ouaoure|",
+"resto|Est-ce que c'est épicé ?|Is it spicy?|iz ite spaïssi|",
+"shop|Vous avez la pointure 43 ?|Do you have size 43?|dou iou hav saïze forte-ssri|",
+"shop|Je peux l'essayer ?|Can I try it on?|kann aï traï ite one|",
+"shop|C'est en solde ?|Is it on sale?|iz ite one seïle|",
+"shop|Vous acceptez les euros ?|Do you accept euros?|dou iou akssepte iourose|",
+"shop|Je peux avoir un sac ?|Can I have a bag?|kann aï hav e bague|",
+"shop|Le ticket de caisse, s'il vous plaît|The receipt, please|ze risïte pliz|",
+"shop|Où est le distributeur ?|Where is the ATM?|ouère iz ze é-ti-èmme|",
+"shop|Vous avez une taille plus grande ?|Do you have a bigger size?|dou iou hav e bigeure saïze|",
+"shop|C'est le bon prix ?|Is this the right price?|iz diss ze raïte praïsse|",
+"chemin|C'est loin d'ici ?|Is it far from here?|iz ite fare frome hière|",
+"chemin|Tournez à la deuxième rue|Turn at the second street|teurne ate ze seconde sstrïte|",
+"chemin|Je suis perdu|I'm lost|aïm loste|",
+"chemin|C'est de quel côté ?|Which side is it?|ouiche saïde izite|",
+"chemin|Juste en face|Just across the street|djeuste aukrosse ze sstrïte|",
+"chemin|Où est l'entrée principale ?|Where is the main entrance?|ouère iz ze meïne entreunce|",
+"chemin|Traversez au passage piéton|Cross at the pedestrian crossing|kurosse ate ze pedeustrïenne kurossing|",
+"urgence|J'ai mal au ventre|I have a stomach ache|aï hav e stoleuke-èke|",
+"urgence|J'ai de la fièvre|I have a fever|aï hav e fïveure|",
+"urgence|Je suis allergique à…|I'm allergic to…|aïm aleurdjike tou|",
+"urgence|J'ai besoin d'un médicament|I need medicine|aï nide meudisseune|",
+"urgence|Appelez les secours|Call the emergency services|kol ze i-meurdjeunce seurvisses|",
+"urgence|C'est une urgence médicale|It's a medical emergency|itz e meudikale i-meurdjeunce|",
+"urgence|Où est la pharmacie la plus proche ?|Where is the nearest pharmacy?|ouère iz ze nïreuste farmaci|",
+"urgence|J'ai besoin d'oxygène médical|I need medical oxygen|aï nide meudikale oksidjeune|",
+"urgence|Où est l'hôpital le plus proche ?|Where is the nearest hospital?|ouère iz ze nïreuste hopitale|",
+"travail|Je suis pompier|I'm a firefighter|aïm e faïeure-faiteure|",
+"travail|Je suis en mission de travail|I'm here on a work assignment|aïm hière one e seurke assinmente|",
+"travail|Voici ma carte professionnelle|Here is my business card|hière iz maï biznisse karde|",
+"travail|Pouvez-vous m'expliquer la procédure ?|Can you explain the procedure?|kann iou eksplèïne ze prosïdjoure|",
+"travail|Je dois récupérer du matériel|I need to pick up equipment|aï nide tou pike eup ikipeumente|",
+"travail|Le matériel est fragile|The equipment is fragile|ze ikipeumente iz fradjile|",
+"travail|C'est un colis professionnel|It's a business shipment|itz e biznisse chipmente|",
+"travail|Voici les documents requis|Here are the required documents|hière ar ze rikouaïdeude dokioumente|",
+"travail|Pouvez-vous vérifier la référence ?|Can you check the reference?|kann iou tchek ze reuféreunce|",
+"travail|Le colis pèse cinquante kilos|The package weighs fifty kilos|ze pakidje oueïze fifti kiloze|",
+"travail|Ce matériel est indispensable pour la mission|This equipment is essential for the mission|diz ikipeumente iz isenchïele fore ze micheune|",
+"arabe|Choukran jazeelan (merci beaucoup)|Thank you very much (shukran jazeelan)|choukrame jazilane|",
+"arabe|La afham (je ne comprends pas)|I do not understand (la afham)|la af-hame|",
+"arabe|Wayn … ? (où est … ?)|Where is … ? (wayn?)|ouaïne|",
 ];
 
 /* ---------------- mots clés : id|fr|en|pro|cat ---------------- */
@@ -502,7 +597,67 @@ var W = [
 "w77|pompiers|firefighters|faïeurfaïteuress|santé",
 "w78|ambulance|ambulance|ambïoulanç|santé",
 "w79|secours|rescue|reussciou|santé",
-"w80|danger|danger|deundjeure|santé"
+"w80|danger|danger|deundjeure|santé",
+"w81|ami|friend|frende|base",
+"w82|maison|house|haousse|base",
+"w83|travail|work|seurke|base",
+"w84|collègue|colleague|koligue|base",
+"w85|famille|family|famili|base",
+"w86|enfant|child|tchaïlde|base",
+"w87|homme|man|manne|base",
+"w88|femme|woman|woumeune|base",
+"w89|chose|thing|ssingue|base",
+"w90|endroit|place|pleïce|base",
+"w91|jour|day|deï|base",
+"w92|semaine|week|ouïke|base",
+"w93|mois|month|meunthe|base",
+"w94|année|year|yire|base",
+"w95|voiture|car|kare|voyage",
+"w96|route|road|rode|voyage",
+"w97|plan (carte)|map|mape|voyage",
+"w98|adresse|address|adreusse|voyage",
+"w99|aéroport|airport|èreporte|voyage",
+"w100|bateau|boat|boate|voyage",
+"w101|camion|truck|treuke|voyage",
+"w102|essence|fuel|fiioule|voyage",
+"w103|pneu|tire|taïeure|voyage",
+"w104|réparation|repair|ripère|voyage",
+"w105|entrée|entrance|entreunce|voyage",
+"w106|sortie|exit|eksitte|voyage",
+"w107|sécurité|security|sikiouriti|voyage",
+"w108|douane|customs|kasteume|voyage",
+"w109|petit-déjeuner|breakfast|brekfeuste|nourriture",
+"w110|déjeuner|lunch|leuntche|nourriture",
+"w111|dîner|dinner|dîneure|nourriture",
+"w112|pain|bread|brede|nourriture",
+"w113|lait|milk|milke|nourriture",
+"w114|café|coffee|kofi|nourriture",
+"w115|thé|tea|tï|nourriture",
+"w116|viande|meat|mïte|nourriture",
+"w117|poulet|chicken|tchikeune|nourriture",
+"w118|poisson|fish|fiche|nourriture",
+"w119|légumes|vegetables|vedjteubeul|nourriture",
+"w120|fruit|fruit|froute|nourriture",
+"w121|soldes|sale|seïle|shopping",
+"w122|réduction|discount|diskaounte|shopping",
+"w123|caisse|checkout|tchekaoute|shopping",
+"w124|échange|exchange|eksstchèndje|shopping",
+"w125|remboursement|refund|rifounde|shopping",
+"w126|reçu|receipt|risïte|shopping",
+"w127|taille|size|saïze|shopping",
+"w128|couleur|color|kouleure|shopping",
+"w129|blessure|injury|indjeuri|santé",
+"w130|fièvre|fever|fïveure|santé",
+"w131|tête|head|hède|santé",
+"w132|ventre|stomach|stomeuke|santé",
+"w133|bras|arm|arme|santé",
+"w134|jambe|leg|legue|santé",
+"w135|sang|blood|blade|santé",
+"w136|ordinateur|computer|kompiouteure|tech",
+"w137|message|message|messédje|tech",
+"w138|courriel|e-mail|i-meïle|tech",
+"w139|photo|photo|footo|tech",
+"w140|application|app|ape|tech",
 ];
 
 /* ---------------- utils ---------------- */
@@ -658,7 +813,46 @@ var MULTI = [
   ["nous sommes", "we are"],
   ["vous etes", "you are"],
   ["ils sont", "they are"],
-  ["tout va", "all is"]
+  ["tout va", "all is"],
+["je dois", "I must"],
+["je viens de", "I have just"],
+["je vais", "I am going to"],
+["je peux", "I can"],
+["vous pouvez", "you can"],
+["je cherche", "I am looking for"],
+["j ai perdu", "I have lost"],
+["je suis alle", "I went"],
+["est ce qu il y a", "is there"],
+["je n ai pas de", "I have no"],
+["aide moi", "help me"],
+["montrez moi", "show me"],
+["expliquez moi", "explain to me"],
+["parlez vous", "do you speak"],
+["je parle", "I speak"],
+["comment dit on", "how do you say"],
+["que veut dire", "what does"],
+["un peu plus", "a little more"],
+["je pense que", "I think that"],
+["je crois que", "I believe that"],
+["j espere que", "I hope that"],
+["c est possible", "it is possible"],
+["c est impossible", "it is impossible"],
+["c est tout", "that is all"],
+["encore une fois", "once again"],
+["petit a petit", "little by little"],
+["faites attention", "be careful"],
+["ne touchez pas", "do not touch"],
+["ou est", "where is"],
+["ou sont", "where are"],
+["le plus proche", "the nearest"],
+["au coin de", "at the corner of"],
+["doucement", "slowly"],
+["plus tard", "later"],
+["tout seul", "all alone"],
+["de temps en temps", "from time to time"],
+["au milieu", "in the middle"],
+["de l autre cote", "on the other side"],
+["par ecrit", "in writing"],
 ].sort(function(a,b){ return b[0].length - a[0].length; });
 
 /* dictionnaire mot à mot FR → EN (clés normalisées, sans accents) */
@@ -905,7 +1099,7 @@ var DICO = [
   /* transport */
   ["voiture","car"],["taxi","taxi"],["metro","metro"],["tram","tram"],["train","train"],
   ["bus","bus"],["velo","bike"],["scooter","scooter"],["moto","motorbike"],
-  ["camion","truck"],["camionnette","van"],["parking","parking"],["essence","fuel"],
+  ["camionnette","van"],["parking","parking"],["essence","fuel"],
   ["gazole","diesel"],["carburant","fuel"],["pneu","tire"],["roue","wheel"],["klaxon","horn"],
   ["frein","brake"],["freins","brakes"],["moteur","engine"],["capot","hood"],["coffre","trunk"],
   ["permis","licence"],["conducteur","driver"],["garer","to park"],["stationnement","parking"],
@@ -963,7 +1157,129 @@ var DICO = [
   ["journal","newspaper"],["nouvelles","news"],["information","information"],
   ["interdit","forbidden"],["regle","rule"],["loi","law"],["droit","right"],
   ["cas","case"],["exemple","example"],["presence","presence"],["absence","absence"],
-  ["couleur","color"],["taille","size"]
+  ["couleur","color"],["taille","size"],
+  /* enrichissement v7 */
+["ecouter","to listen"],
+["reparer","to repair"],
+["fermer","to close"],
+["allumer","to switch on"],
+["eteindre","to switch off"],
+["remplacer","to replace"],
+["vendre","to sell"],
+["brancher","to plug in"],
+["peser","to weigh"],
+["emballer","to pack"],
+["deballer","to unpack"],
+["transporter","to transport"],
+["solide","solid"],
+["casse","broken"],
+["complet","full"],
+["meme","same"],
+["disponible","available"],
+["appareil","device"],
+["piece","part"],
+["vis","screw"],
+["boulon","bolt"],
+["fiche","plug"],
+["courant","power"],
+["panne","breakdown"],
+["defaut","fault"],
+["agent","officer"],
+["fournisseur","supplier"],
+["commande","order"],
+["livraison","delivery"],
+["colis","parcel"],
+["emballage","packaging"],
+["etiquette","label"],
+["marquage","marking"],
+["poids","weight"],
+["sejour","stay"],
+["homologation","type approval"],
+["riviere","river"],
+["montagne","mountain"],
+["foret","forest"],
+["agence","agency"],
+["guichet","counter"],
+["mur","wall"],
+["toit","roof"],
+["zone","zone"],
+["nord","north"],
+["sud","south"],
+["ouest","west"],
+["assistance","assistance"],
+["traitement","treatment"],
+["dose","dose"],
+["medicament","medicine"],
+["secouriste","first aider"],
+["coupure","cut"],
+["gaze","gauze"],
+["desinfectant","disinfectant"],
+["corde","rope"],
+["pelle","shovel"],
+["eclairage","lighting"],
+["assiette","plate"],
+["couteau","knife"],
+["fourchette","fork"],
+["cuillere","spoon"],
+["verre","glass"],
+["tasse","cup"],
+["table","table"],
+["chaise","chair"],
+["couverture","blanket"],
+["savon","soap"],
+["dentifrice","toothpaste"],
+["brosse a dents","toothbrush"],
+["rasoir","razor"],
+["miroir","mirror"],
+["serviette de bain","towel"],
+["petit dejeuner","breakfast"],
+["tempete","storm"],
+["sable","sand"],
+["frais","cool"],
+["seche","dry"],
+["instant","moment"],
+["aujourdhui","today"],
+["grand pere","grandfather"],
+["grand mere","grandmother"],
+["front","forehead"],
+["vetement","clothes"],
+["chemise","shirt"],
+["pantalon","trousers"],
+["chaussure","shoe"],
+["manteau","coat"],
+["casquette","cap"],
+["maillot","t-shirt"],
+["carton","cardboard box"],
+["palette","pallet"],
+["sangle","strap"],
+["cale","wedge"],
+["liquide","liquid"],
+["poudre","powder"],
+["cylindre","cylinder"],
+["bouteille","bottle"],
+["jerricane","jerrican"],
+["fut","drum"],
+["bidon","canister"],
+["expediteur","shipper"],
+["destinataire","consignee"],
+["transporteur","carrier"],
+["compagnie aerienne","airline"],
+["suremballage","overpack"],
+["aeronef","aircraft"],
+["helicoptere","helicopter"],
+["helisurface","helipad"],
+["drone","drone"],
+["canal","channel"],
+["equipage","crew"],
+["pilote","pilot"],
+["mecanicien","mechanic"],
+["technicien","technician"],
+["notice","manual"],
+["reglement","regulation"],
+["humidite","humidity"],
+["recharge","recharging"],
+["marchandises","goods"],
+["apercu","overview"],
 ];
 
 /* ---------------- maps mot -> mot (FW : FR->EN, REV : EN->FR) ---------------- */
@@ -1325,7 +1641,7 @@ function histHtml(){
 function translatorBlock(){
   var h = '<div class="info-card">';
   h += '<h3>🈯 Traducteur hors ligne</h3>';
-  h += '<p>Écrivez en français ou en anglais : la langue est détectée automatiquement et la traduction apparaît pendant la frappe. ~600 mots + ~110 expressions intégrés, aucune connexion requise.</p>';
+  h += '<p>Écrivez en français ou en anglais : la langue est détectée automatiquement et la traduction apparaît pendant la frappe. ' + DICO.length + ' mots + ' + MULTI.length + ' expressions intégrés, aucune connexion requise.</p>';
   h += sosRow();
   h += '<div class="dirbox">';
   h += '<button class="abtn dir' + (trDir === "fe" ? " active" : "") + '" data-dir="fe">FR → EN</button>';
@@ -1513,7 +1829,11 @@ var IATA_CUSTOMS = [
   ["C'est un équipement de service, pas destiné à la revente.", "It is service equipment, not for resale.", "ite iz sservice ékipmenne, note fore ri-sêle", ""],
   ["Où est le bureau de douane ?", "Where is the customs office?", "ouère iz ze kasteume offisse", ""],
   ["Dois-je payer des droits de douane sur ce matériel ?", "Do I have to pay customs duty on this equipment?", "dou aï haf tou pê kasteume dioutï", ""],
-  ["Je peux vous montrer la facture et le bon de livraison.", "I can show you the invoice and the delivery note.", "aï kann cho iou ze invoiss ennde ze dilivri nôte", ""]
+  ["Je peux vous montrer la facture et le bon de livraison.", "I can show you the invoice and the delivery note.", "aï kann cho iou ze invoiss ennde ze dilivri nôte", ""],
+  ["Voici mon passeport et mon visa.","Here are my passport and visa.","hière ar maï passeporte ennde maï viza","Réponses courtes et factuelles en contrôle frontière."],
+  ["Je suis en transit vers ma destination finale.","I am in transit to my final destination.","aï am ine transsite tou maï faïneule destineucheune",""],
+  ["Combien de temps prend l'inspection ?","How long does the inspection take?","haou long daz ze inspeckcheune teïke",""],
+  ["Puis-je avoir un reçu pour les droits payés ?","Can I get a receipt for the duty paid?","kann aï guette e risïte fore ze dioutï peïde","Conserver tous les justificatifs douane."],
 ];
 var IATA_SHIP = [
   ["Je dois déposer une expédition fret.", "I need to drop off a freight shipment.", "aï nide tou droppe off e frête chipmenne", ""],
@@ -1527,7 +1847,11 @@ var IATA_SHIP = [
   ["Le numéro d'urgence 24 h/24 figure sur la déclaration.", "The 24-hour emergency contact number is on the declaration.", "ze ouènty-four ours émer-djensi kontakt nambre iz one déklérécheune", "Obligatoire (ex. FRG-07 France) : téléphone joignable TOUT le transport."],
   ["Vérifiez les variations État et opérateur, s'il vous plaît.", "Please check the State and Operator variations.", "pliz tchek ze stête ennde opérateur vériécheune", "Chaque pays/compagnie peut restreindre ou interdire (ex. beaucoup refusent la Section II lithium)."],
   ["Je suis expéditeur formé (CBTA).", "I am a CBTA-trained shipper.", "aï am e sï-bi-ti-ê trênde chip-eur", "Formation MDD par fonction, récurrente ≤ 24 mois."],
-  ["Qui est le transitaire ?", "Who is the freight forwarder?", "hou iz ze frête forwardeur", ""]
+  ["Qui est le transitaire ?", "Who is the freight forwarder?", "hou iz ze frête forwardeur", ""],
+  ["Le colis est endommagé — je refuse la livraison.","The package is damaged — I am rejecting the delivery.","ze pakidje iz damidjeude — aï am ridjecteune ze dilivri","Émettre des réserves écrites dès la réception."],
+  ["Les flèches d'orientation pointent vers le haut.","The orientation arrows point upwards.","ze orienteucheune aroz poïnte veurds ze haoute","Flèches d'orientation : haut, sur deux faces opposées (liquides, colis intérieurs)."],
+  ["Quelle est l'heure limite d'acceptation du fret ?","What is the cut-off time for freight acceptance?","ouate iz ze keute-off taïme fore frête aksepteunce","Cut-off : horaire limite de dépôt avant le vol."],
+  ["Où sont les documents de transport ?","Where are the transport documents?","ouère ar ze transsporte dokioumenz",""],
 ];
 var IATA_RADIO = [
   ["Batteries lithium-ion contenues dans l'équipement.", "Lithium-ion batteries contained in equipment — UN 3481, PI 967.", "lideum-ion batriz contênde in équipmenne", "Radios avec batterie installée. § II : piles ≤ 5 kg par colis, autorisé passagers — SoC ≤ 30 % recommandé."],
@@ -1564,7 +1888,13 @@ var IATA_VOCAB = [
   ["Oxygen, compressed", "oxygène comprimé — UN 1072, classe 2.2 (5.1)"],
   ["Life-saving appliances", "équipements de sauvetage (gilets, fusées)"],
   ["Class 7 — Radioactive", "matière radioactive — périmètre IAEA, pas IATA"],
-  ["State / Operator variations", "variations État / compagnie (ex. FRG-07 France : n° d'urgence 24 h)"]
+  ["State / Operator variations", "variations État / compagnie (ex. FRG-07 France : n° d'urgence 24 h)"],
+  ["Shipper","expéditeur — celui qui remet le colis au transporteur"],
+  ["Consignee","destinataire mentionné sur l'AWB"],
+  ["Net quantity","quantité nette par colis — mention obligatoire de la DGD"],
+  ["Gross weight","poids brut du colis"],
+  ["Cut-off time","heure limite d'acceptation du fret avant le vol"],
+  ["Segregation","séparation des marchandises incompatibles entre elles"],
 ];
 function iataCard(fr, en, pro, note){
   var h = '<div class="card">';
@@ -1605,7 +1935,10 @@ var SOS = [
   ["Call the police!", "🚓 Police", "kol ze police"],
   ["I need a doctor", "👨‍⚕️ Médecin", "aï nide e docteur"],
   ["Where are the toilets?", "🚻 Toilettes", "ouère ar ze toyalette"],
-  ["How much is it?", "💶 Combien ?", "haoue matche iz ite"]
+  ["How much is it?", "💶 Combien ?", "haoue matche iz ite"],
+  ["I'm lost", "🧭 Je suis perdu", "aïm loste"],
+  ["Please write it down", "📝 Écrivez-le", "pliz raïte ite daoune"],
+  ["Can you help me?", "🤝 Aidez-moi", "kann iou hèlp mi"],
 ];
 function sosRow(){
   var h = '<div class="sect">🆘 Réflexes SOS — un tap, ça s\'affiche</div>';
@@ -1632,11 +1965,13 @@ function quizBest(){
   try{ return parseInt(store("qatar-quiz-best") || "0", 10) || 0; }catch(e){ return 0; }
 }
 function quizQ(){
-  var w = WD[Math.floor(Math.random() * WD.length)];
+  var usePh = (PH.length >= 4) && (Math.random() < 0.4);
+  var pool = usePh ? PH : WD;
+  var w = pool[Math.floor(Math.random() * pool.length)];
   var opts = [w.en];
   var guard = 0;
   while (opts.length < 4 && guard < 300){
-    var o = WD[Math.floor(Math.random() * WD.length)].en;
+    var o = pool[Math.floor(Math.random() * pool.length)].en;
     if (opts.indexOf(o) < 0) opts.push(o);
     guard++;
   }
@@ -1651,7 +1986,7 @@ function quizBlock(){
   h += '<h3>🎓 Quiz express — 10 questions</h3>';
   if (!QZ.on && !QZ.done){
     var b = quizBest();
-    h += '<p>Un mot français s\'affiche, choisis la bonne traduction. Correction immédiate, score conservé sur l\'appareil.</p>';
+    h += '<p>Un mot ou une phrase française s\'affiche, choisis la bonne traduction. Correction immédiate, score conservé sur l\'appareil.</p>';
     if (b) h += '<p>🏆 Meilleur score : <b>' + b + '/10</b></p>';
     h += '<div class="actions"><button class="abtn big qzStart">Commencer le quiz</button></div>';
   } else if (QZ.done){
@@ -1734,7 +2069,7 @@ function flashBlock(){
     h += '</div>';
     h += '<div class="actions" style="margin-top:10px;"><button class="abtn big fcFlip">Voir la réponse</button></div>';
   }
-  h += '<p class="tip">« À revoir » : la carte revient en priorité. Objectif : les 80 mots maîtrisés avant le départ.</p>';
+  h += '<p class="tip">« À revoir » : la carte revient en priorité. Objectif : les ' + WD.length + ' mots maîtrisés avant le départ.</p>';
   h += '</div>';
   return h;
 }
@@ -1784,6 +2119,13 @@ var LESSONS = [
     ["À gauche / à droite", "to the left / to the right"],
     ["Tout droit", "straight on"],
     ["Je suis perdu", "I'm lost"]
+  ]},
+  { t: "5️⃣ Chiffres et prix", rows: [
+    ["Un, deux, trois","one, two, three"],
+    ["Dix / vingt","ten / twenty"],
+    ["Cent / mille","one hundred / one thousand"],
+    ["C'est combien ?","how much is it?"],
+    ["Trop cher","too expensive"]
   ]}
 ];
 function lessonsBlock(){
@@ -1933,5 +2275,6 @@ if ("serviceWorker" in navigator){
 </script>
 </body>
 </html>
+
 
 
